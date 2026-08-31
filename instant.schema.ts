@@ -13,8 +13,41 @@ const _schema = i.schema({
       imageURL: i.string().optional(),
       type: i.string().optional(),
     }),
-    colors: i.entity({
-      value: i.string(),
+    bookmarks: i.entity({
+      ref: i.string().indexed(),
+      book: i.string(),
+      chapter: i.number(),
+      verse: i.number(),
+      createdAt: i.number().indexed(),
+    }),
+    highlights: i.entity({
+      ref: i.string().indexed(),
+      book: i.string(),
+      chapter: i.number(),
+      verse: i.number(),
+      color: i.string(),
+      createdAt: i.number().indexed(),
+    }),
+    notes: i.entity({
+      ref: i.string().indexed(),
+      book: i.string(),
+      chapter: i.number(),
+      verse: i.number(),
+      text: i.string(),
+      createdAt: i.number().indexed(),
+    }),
+    planProgress: i.entity({
+      kind: i.string().indexed(), // 'chrono' | 'sin' | 'studyCategory' | 'studyWeekly'
+      key: i.string().indexed(), // day number (as string) or sin key
+    }),
+    settings: i.entity({
+      atmosphere: i.string(), // 'parchment' | 'stone' | 'midnight'
+      readerFontSize: i.number(),
+      notificationsOn: i.boolean(),
+    }),
+    narrations: i.entity({
+      bookChapter: i.string().unique().indexed(),
+      name: i.string(),
     }),
   },
   rooms: {},
@@ -31,6 +64,34 @@ const _schema = i.schema({
         has: "many",
         label: "linkedGuestUsers",
       },
+    },
+    bookmarksOwner: {
+      forward: { on: "bookmarks", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "many", label: "bookmarks" },
+    },
+    highlightsOwner: {
+      forward: { on: "highlights", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "many", label: "highlights" },
+    },
+    notesOwner: {
+      forward: { on: "notes", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "many", label: "notes" },
+    },
+    planProgressOwner: {
+      forward: { on: "planProgress", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "many", label: "planProgress" },
+    },
+    settingsOwner: {
+      forward: { on: "settings", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "one", label: "settings" },
+    },
+    narrationsOwner: {
+      forward: { on: "narrations", has: "one", label: "owner" },
+      reverse: { on: "$users", has: "many", label: "narrations" },
+    },
+    narrationsFile: {
+      forward: { on: "narrations", has: "one", label: "audioFile" },
+      reverse: { on: "$files", has: "one", label: "narration" },
     },
   },
 });

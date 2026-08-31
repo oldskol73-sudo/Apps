@@ -39,3 +39,7 @@ yarn-error.*
 app-example
 
 .env
+'nandroid/'nTSP-Bible-App/
+
+android/
+TSP-Bible-App/

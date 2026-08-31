@@ -2,23 +2,32 @@
 
 import type { InstantRules } from "@instantdb/react-native";
 
+const ownerRules = {
+  allow: {
+    view: "isOwner",
+    create: "isOwner",
+    update: "isOwner",
+    delete: "isOwner",
+  },
+  bind: ["isOwner", "auth.id != null && auth.id in data.ref('owner.id')"],
+};
+
 const rules = {
-  /**
-   * Welcome to Instant's permission system!
-   * Right now your rules are empty. To start filling them in, check out the docs:
-   * https://www.instantdb.com/docs/permissions
-   *
-   * Here's an example to give you a feel:
-   * posts: {
-   *   allow: {
-   *     view: "true",
-   *     create: "isOwner",
-   *     update: "isOwner",
-   *     delete: "isOwner",
-   *   },
-   *   bind: ["isOwner", "auth.id != null && auth.id == data.ownerId"],
-   * },
-   */
+  bookmarks: ownerRules,
+  highlights: ownerRules,
+  notes: ownerRules,
+  planProgress: ownerRules,
+  settings: ownerRules,
+  narrations: ownerRules,
+  // Narration uploads are stored at `narrations/<userId>/<bookChapter>-<filename>`,
+  // so path-based rules (data.ref doesn't work for $files) scope access to the owner.
+  $files: {
+    allow: {
+      view: "auth.id != null && data.path.startsWith('narrations/' + auth.id + '/')",
+      create: "auth.id != null && data.path.startsWith('narrations/' + auth.id + '/')",
+      delete: "auth.id != null && data.path.startsWith('narrations/' + auth.id + '/')",
+    },
+  },
 } satisfies InstantRules;
 
 export default rules;
