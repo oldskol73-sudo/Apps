@@ -1,0 +1,1049 @@
+{
+  "version": 1,
+  "freeShippingThreshold": 60,
+  "products": [
+    {
+      "id": "spray-reuben",
+      "category": "spray",
+      "name": "Reuben",
+      "stone": "Sardius",
+      "numeral": "I",
+      "colorHex": "#8E2B25",
+      "character": "Warm",
+      "tagline": "The firstborn: warm, spiced and confident.",
+      "description": "Reuben, sardius of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Blood orange"
+        },
+        {
+          "label": "Heart",
+          "value": "Red clove"
+        },
+        {
+          "label": "Base",
+          "value": "Amber"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-reuben-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-reuben-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-reuben-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-reuben-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-simeon",
+      "category": "spray",
+      "name": "Simeon",
+      "stone": "Topaz",
+      "numeral": "II",
+      "colorHex": "#B0822C",
+      "character": "Bright",
+      "tagline": "Sunlit honey over clean wood.",
+      "description": "Simeon, topaz of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Bergamot"
+        },
+        {
+          "label": "Heart",
+          "value": "Golden honey"
+        },
+        {
+          "label": "Base",
+          "value": "Cedar"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-simeon-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-simeon-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-simeon-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-simeon-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-levi",
+      "category": "spray",
+      "name": "Levi",
+      "stone": "Carbuncle",
+      "numeral": "III",
+      "colorHex": "#6E1F35",
+      "character": "Warm",
+      "tagline": "Deep, priestly and resinous.",
+      "description": "Levi, carbuncle of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Pomegranate"
+        },
+        {
+          "label": "Heart",
+          "value": "Rose"
+        },
+        {
+          "label": "Base",
+          "value": "Frankincense"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-levi-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-levi-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-levi-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-levi-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-judah",
+      "category": "spray",
+      "name": "Judah",
+      "stone": "Emerald",
+      "numeral": "IV",
+      "colorHex": "#2F6E4A",
+      "character": "Fresh",
+      "tagline": "A lion-hearted green.",
+      "description": "Judah, emerald of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Green fig leaf"
+        },
+        {
+          "label": "Heart",
+          "value": "Cypress"
+        },
+        {
+          "label": "Base",
+          "value": "Moss"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-judah-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-judah-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-judah-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-judah-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-issachar",
+      "category": "spray",
+      "name": "Issachar",
+      "stone": "Sapphire",
+      "numeral": "V",
+      "colorHex": "#27447A",
+      "character": "Grounding",
+      "tagline": "Steady, deep and quietly strong.",
+      "description": "Issachar, sapphire of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Sea salt"
+        },
+        {
+          "label": "Heart",
+          "value": "Vetiver"
+        },
+        {
+          "label": "Base",
+          "value": "Driftwood"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-issachar-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-issachar-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-issachar-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-issachar-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-zebulun",
+      "category": "spray",
+      "name": "Zebulun",
+      "stone": "Diamond",
+      "numeral": "VI",
+      "colorHex": "#7F8C8F",
+      "character": "Bright",
+      "tagline": "Harbour air, crisp and luminous.",
+      "description": "Zebulun, diamond of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Sea mist"
+        },
+        {
+          "label": "Heart",
+          "value": "White musk"
+        },
+        {
+          "label": "Base",
+          "value": "Pearl"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-zebulun-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-zebulun-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-zebulun-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-zebulun-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-dan",
+      "category": "spray",
+      "name": "Dan",
+      "stone": "Ligure",
+      "numeral": "VII",
+      "colorHex": "#A0522D",
+      "character": "Grounding",
+      "tagline": "Burnished, dry and smoky-sweet.",
+      "description": "Dan, ligure of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Cinnamon bark"
+        },
+        {
+          "label": "Heart",
+          "value": "Tobacco leaf"
+        },
+        {
+          "label": "Base",
+          "value": "Sandalwood"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-dan-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-dan-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-dan-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-dan-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-naphtali",
+      "category": "spray",
+      "name": "Naphtali",
+      "stone": "Agate",
+      "numeral": "VIII",
+      "colorHex": "#5F7A63",
+      "character": "Fresh",
+      "tagline": "A hind let loose: green and swift.",
+      "description": "Naphtali, agate of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Wild mint"
+        },
+        {
+          "label": "Heart",
+          "value": "Sage"
+        },
+        {
+          "label": "Base",
+          "value": "Oak moss"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-naphtali-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-naphtali-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-naphtali-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-naphtali-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-gad",
+      "category": "spray",
+      "name": "Gad",
+      "stone": "Amethyst",
+      "numeral": "IX",
+      "colorHex": "#5B3A7A",
+      "character": "Warm",
+      "tagline": "Velvet violet with a soft finish.",
+      "description": "Gad, amethyst of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Lavender"
+        },
+        {
+          "label": "Heart",
+          "value": "Plum"
+        },
+        {
+          "label": "Base",
+          "value": "Vanilla bean"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-gad-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-gad-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-gad-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-gad-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-asher",
+      "category": "spray",
+      "name": "Asher",
+      "stone": "Beryl",
+      "numeral": "X",
+      "colorHex": "#8A6A2F",
+      "character": "Warm",
+      "tagline": "Rich bread and olive oil, golden.",
+      "description": "Asher, beryl of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Olive blossom"
+        },
+        {
+          "label": "Heart",
+          "value": "Fig"
+        },
+        {
+          "label": "Base",
+          "value": "Myrrh"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-asher-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-asher-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-asher-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-asher-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-joseph",
+      "category": "spray",
+      "name": "Joseph",
+      "stone": "Onyx",
+      "numeral": "XI",
+      "colorHex": "#3A3430",
+      "character": "Grounding",
+      "tagline": "Dark, polished and enduring.",
+      "description": "Joseph, onyx of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Black pepper"
+        },
+        {
+          "label": "Heart",
+          "value": "Oud"
+        },
+        {
+          "label": "Base",
+          "value": "Leather"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-joseph-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-joseph-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-joseph-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-joseph-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-benjamin",
+      "category": "spray",
+      "name": "Benjamin",
+      "stone": "Jasper",
+      "numeral": "XII",
+      "colorHex": "#8C3D2E",
+      "character": "Bright",
+      "tagline": "The youngest, bright and quick.",
+      "description": "Benjamin, jasper of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Pink grapefruit"
+        },
+        {
+          "label": "Heart",
+          "value": "Red cedar"
+        },
+        {
+          "label": "Base",
+          "value": "Smoked sugar"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-benjamin-100",
+          "label": "100 ml room spray",
+          "price": 35
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-benjamin-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-benjamin-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-benjamin-inuse.jpg"
+      ]
+    },
+    {
+      "id": "incense-frankincense-myrrh",
+      "category": "incense",
+      "name": "Frankincense & Myrrh",
+      "colorHex": "#C99A3F",
+      "character": "Warm",
+      "tagline": "The old-world classic.",
+      "description": "A rich, traditional blend of frankincense and myrrh, hand rolled for a clean, aromatic burn. Ideal for prayer, meditation, and creating a reverent atmosphere in the home.",
+      "details": [
+        {
+          "label": "Base",
+          "value": "Resin & bark"
+        },
+        {
+          "label": "Made",
+          "value": "Hand rolled"
+        },
+        {
+          "label": "Finish",
+          "value": "Sweet, balsamic"
+        }
+      ],
+      "variants": [
+        {
+          "id": "incense-frankincense-myrrh-handrolledincense",
+          "label": "Hand-rolled Incense",
+          "price": 18
+        },
+        {
+          "id": "incense-frankincense-myrrh-boxof3",
+          "label": "Box of 3",
+          "price": 48
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "rock-frankincense",
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/incense-frankincense-myrrh-main.jpg",
+        "https://cdn.twelvescents.example/p/incense-frankincense-myrrh-detail.jpg",
+        "https://cdn.twelvescents.example/p/incense-frankincense-myrrh-inuse.jpg"
+      ]
+    },
+    {
+      "id": "incense-sandalwood-cedar",
+      "category": "incense",
+      "name": "Sandalwood & Cedar",
+      "colorHex": "#C99A3F",
+      "character": "Grounding",
+      "tagline": "Quiet timber.",
+      "description": "Creamy sandalwood over dry cedar, hand rolled and slow burning.",
+      "details": [
+        {
+          "label": "Base",
+          "value": "Sandalwood"
+        },
+        {
+          "label": "Made",
+          "value": "Hand rolled"
+        },
+        {
+          "label": "Finish",
+          "value": "Dry, woody"
+        }
+      ],
+      "variants": [
+        {
+          "id": "incense-sandalwood-cedar-handrolledincense",
+          "label": "Hand-rolled Incense",
+          "price": 16
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "censer-tabletop-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/incense-sandalwood-cedar-main.jpg",
+        "https://cdn.twelvescents.example/p/incense-sandalwood-cedar-detail.jpg",
+        "https://cdn.twelvescents.example/p/incense-sandalwood-cedar-inuse.jpg"
+      ]
+    },
+    {
+      "id": "incense-rose-sharon",
+      "category": "incense",
+      "name": "Rose of Sharon",
+      "colorHex": "#C99A3F",
+      "character": "Fresh",
+      "tagline": "Petals and morning air.",
+      "description": "A soft floral incense of rose petal and white tea, hand rolled.",
+      "details": [
+        {
+          "label": "Base",
+          "value": "Rose & tea"
+        },
+        {
+          "label": "Made",
+          "value": "Hand rolled"
+        },
+        {
+          "label": "Finish",
+          "value": "Light, airy"
+        }
+      ],
+      "variants": [
+        {
+          "id": "incense-rose-sharon-handrolledincense",
+          "label": "Hand-rolled Incense",
+          "price": 16
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "censer-tabletop-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/incense-rose-sharon-main.jpg",
+        "https://cdn.twelvescents.example/p/incense-rose-sharon-detail.jpg",
+        "https://cdn.twelvescents.example/p/incense-rose-sharon-inuse.jpg"
+      ]
+    },
+    {
+      "id": "incense-lavender-sage",
+      "category": "incense",
+      "name": "Lavender & Sage",
+      "colorHex": "#C99A3F",
+      "character": "Bright",
+      "tagline": "A clearing breath.",
+      "description": "Herbal lavender and sage for a clean, bright room.",
+      "details": [
+        {
+          "label": "Base",
+          "value": "Herbs"
+        },
+        {
+          "label": "Made",
+          "value": "Hand rolled"
+        },
+        {
+          "label": "Finish",
+          "value": "Clean, green"
+        }
+      ],
+      "variants": [
+        {
+          "id": "incense-lavender-sage-handrolledincense",
+          "label": "Hand-rolled Incense",
+          "price": 16
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/incense-lavender-sage-main.jpg",
+        "https://cdn.twelvescents.example/p/incense-lavender-sage-detail.jpg",
+        "https://cdn.twelvescents.example/p/incense-lavender-sage-inuse.jpg"
+      ]
+    },
+    {
+      "id": "rock-frankincense",
+      "category": "rock",
+      "name": "Frankincense Tears",
+      "colorHex": "#C99A3F",
+      "character": "Warm",
+      "tagline": "Resin from Oman.",
+      "description": "Hand-picked frankincense resin, burned on charcoal in a censer for a sweet, lemony smoke.",
+      "details": [
+        {
+          "label": "Origin",
+          "value": "Oman"
+        },
+        {
+          "label": "Grade",
+          "value": "Hojari"
+        },
+        {
+          "label": "Burn",
+          "value": "On charcoal"
+        }
+      ],
+      "variants": [
+        {
+          "id": "rock-frankincense-30g",
+          "label": "30 g",
+          "price": 14
+        },
+        {
+          "id": "rock-frankincense-100g",
+          "label": "100 g",
+          "price": 38
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "charcoal-quick-light",
+        "censer-hanging-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/rock-frankincense-main.jpg",
+        "https://cdn.twelvescents.example/p/rock-frankincense-detail.jpg",
+        "https://cdn.twelvescents.example/p/rock-frankincense-inuse.jpg"
+      ]
+    },
+    {
+      "id": "rock-myrrh",
+      "category": "rock",
+      "name": "Myrrh Resin",
+      "colorHex": "#C99A3F",
+      "character": "Grounding",
+      "tagline": "Bitter, balsamic, ancient.",
+      "description": "Dark amber myrrh resin with a warm, medicinal sweetness.",
+      "details": [
+        {
+          "label": "Origin",
+          "value": "Somalia"
+        },
+        {
+          "label": "Grade",
+          "value": "Select"
+        },
+        {
+          "label": "Burn",
+          "value": "On charcoal"
+        }
+      ],
+      "variants": [
+        {
+          "id": "rock-myrrh-30g",
+          "label": "30 g",
+          "price": 14
+        },
+        {
+          "id": "rock-myrrh-100g",
+          "label": "100 g",
+          "price": 36
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/rock-myrrh-main.jpg",
+        "https://cdn.twelvescents.example/p/rock-myrrh-detail.jpg",
+        "https://cdn.twelvescents.example/p/rock-myrrh-inuse.jpg"
+      ]
+    },
+    {
+      "id": "rock-copal",
+      "category": "rock",
+      "name": "White Copal",
+      "colorHex": "#C99A3F",
+      "character": "Bright",
+      "tagline": "Pine, citrus, light.",
+      "description": "Pale copal resin that burns bright and clean.",
+      "details": [
+        {
+          "label": "Origin",
+          "value": "Mexico"
+        },
+        {
+          "label": "Grade",
+          "value": "White"
+        },
+        {
+          "label": "Burn",
+          "value": "On charcoal"
+        }
+      ],
+      "variants": [
+        {
+          "id": "rock-copal-30g",
+          "label": "30 g",
+          "price": 12
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/rock-copal-main.jpg",
+        "https://cdn.twelvescents.example/p/rock-copal-detail.jpg",
+        "https://cdn.twelvescents.example/p/rock-copal-inuse.jpg"
+      ]
+    },
+    {
+      "id": "oil-spikenard",
+      "category": "oil",
+      "name": "Spikenard Oil",
+      "colorHex": "#C99A3F",
+      "character": "Grounding",
+      "tagline": "Precious and earthy.",
+      "description": "A rich, earthy burning oil. Add a few drops to a warmed dish.",
+      "details": [
+        {
+          "label": "Notes",
+          "value": "Earth, musk"
+        },
+        {
+          "label": "Size",
+          "value": "15 ml"
+        },
+        {
+          "label": "Use",
+          "value": "Oil burner"
+        }
+      ],
+      "variants": [
+        {
+          "id": "oil-spikenard-15ml",
+          "label": "15 ml",
+          "price": 24
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "censer-tabletop-brass"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/oil-spikenard-main.jpg",
+        "https://cdn.twelvescents.example/p/oil-spikenard-detail.jpg",
+        "https://cdn.twelvescents.example/p/oil-spikenard-inuse.jpg"
+      ]
+    },
+    {
+      "id": "oil-cedar-hyssop",
+      "category": "oil",
+      "name": "Cedar & Hyssop Oil",
+      "colorHex": "#C99A3F",
+      "character": "Fresh",
+      "tagline": "Clean and herbal.",
+      "description": "Cedarwood and hyssop in a lightweight burning oil.",
+      "details": [
+        {
+          "label": "Notes",
+          "value": "Cedar, herb"
+        },
+        {
+          "label": "Size",
+          "value": "15 ml"
+        },
+        {
+          "label": "Use",
+          "value": "Oil burner"
+        }
+      ],
+      "variants": [
+        {
+          "id": "oil-cedar-hyssop-15ml",
+          "label": "15 ml",
+          "price": 22
+        }
+      ],
+      "subscribable": true,
+      "pairings": [],
+      "images": [
+        "https://cdn.twelvescents.example/p/oil-cedar-hyssop-main.jpg",
+        "https://cdn.twelvescents.example/p/oil-cedar-hyssop-detail.jpg",
+        "https://cdn.twelvescents.example/p/oil-cedar-hyssop-inuse.jpg"
+      ]
+    },
+    {
+      "id": "oil-amber-oud",
+      "category": "oil",
+      "name": "Amber & Oud Oil",
+      "colorHex": "#C99A3F",
+      "character": "Warm",
+      "tagline": "Dark honey.",
+      "description": "A deep amber burning oil with a whisper of oud.",
+      "details": [
+        {
+          "label": "Notes",
+          "value": "Amber, oud"
+        },
+        {
+          "label": "Size",
+          "value": "15 ml"
+        },
+        {
+          "label": "Use",
+          "value": "Oil burner"
+        }
+      ],
+      "variants": [
+        {
+          "id": "oil-amber-oud-15ml",
+          "label": "15 ml",
+          "price": 26
+        }
+      ],
+      "subscribable": true,
+      "pairings": [],
+      "images": [
+        "https://cdn.twelvescents.example/p/oil-amber-oud-main.jpg",
+        "https://cdn.twelvescents.example/p/oil-amber-oud-detail.jpg",
+        "https://cdn.twelvescents.example/p/oil-amber-oud-inuse.jpg"
+      ]
+    },
+    {
+      "id": "censer-hanging-brass",
+      "category": "censer",
+      "name": "Hanging Brass Censer",
+      "colorHex": "#C99A3F",
+      "character": "Warm",
+      "tagline": "Chains, bells, smoke.",
+      "description": "A hand-finished brass censer on a chain, for burning resin over charcoal.",
+      "details": [
+        {
+          "label": "Material",
+          "value": "Solid brass"
+        },
+        {
+          "label": "Height",
+          "value": "18 cm"
+        },
+        {
+          "label": "Finish",
+          "value": "Polished"
+        }
+      ],
+      "variants": [
+        {
+          "id": "censer-hanging-brass-brass",
+          "label": "Brass",
+          "price": 68
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "charcoal-quick-light",
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/censer-hanging-brass-main.jpg",
+        "https://cdn.twelvescents.example/p/censer-hanging-brass-detail.jpg",
+        "https://cdn.twelvescents.example/p/censer-hanging-brass-inuse.jpg"
+      ]
+    },
+    {
+      "id": "censer-tabletop-brass",
+      "category": "censer",
+      "name": "Tabletop Brass Censer",
+      "colorHex": "#C99A3F",
+      "character": "Grounding",
+      "tagline": "A small altar.",
+      "description": "A footed brass bowl with lid, for incense, resin and oils.",
+      "details": [
+        {
+          "label": "Material",
+          "value": "Solid brass"
+        },
+        {
+          "label": "Height",
+          "value": "10 cm"
+        },
+        {
+          "label": "Finish",
+          "value": "Antique"
+        }
+      ],
+      "variants": [
+        {
+          "id": "censer-tabletop-brass-brass",
+          "label": "Brass",
+          "price": 54
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/censer-tabletop-brass-main.jpg",
+        "https://cdn.twelvescents.example/p/censer-tabletop-brass-detail.jpg",
+        "https://cdn.twelvescents.example/p/censer-tabletop-brass-inuse.jpg"
+      ]
+    },
+    {
+      "id": "charcoal-quick-light",
+      "category": "charcoal",
+      "name": "Quick-light Charcoal",
+      "colorHex": "#C99A3F",
+      "character": "Grounding",
+      "tagline": "Lit in seconds.",
+      "description": "Self-igniting charcoal discs for resin. Light one corner and wait for the glow.",
+      "details": [
+        {
+          "label": "Count",
+          "value": "10 discs"
+        },
+        {
+          "label": "Size",
+          "value": "33 mm"
+        },
+        {
+          "label": "Burn",
+          "value": "~45 min"
+        }
+      ],
+      "variants": [
+        {
+          "id": "charcoal-quick-light-10discs",
+          "label": "10 discs",
+          "price": 8
+        },
+        {
+          "id": "charcoal-quick-light-30discs",
+          "label": "30 discs",
+          "price": 20
+        }
+      ],
+      "subscribable": true,
+      "pairings": [
+        "rock-frankincense"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/charcoal-quick-light-main.jpg",
+        "https://cdn.twelvescents.example/p/charcoal-quick-light-detail.jpg",
+        "https://cdn.twelvescents.example/p/charcoal-quick-light-inuse.jpg"
+      ]
+    }
+  ]
+}

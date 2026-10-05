@@ -1,0 +1,22 @@
+{
+  "expo": {
+    "name": "Twelve Scents",
+    "slug": "twelve-scents",
+    "scheme": "twelvescents",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "newArchEnabled": true,
+    "backgroundColor": "#F4EEE5",
+    "ios": { "supportsTablet": false, "bundleIdentifier": "com.twelvescents.app" },
+    "android": { "package": "com.twelvescents.app", "edgeToEdgeEnabled": true },
+    "web": { "bundler": "metro", "output": "single" },
+    "plugins": ["expo-router", "expo-font"],
+    "experiments": { "typedRoutes": false },
+    "extra": {
+      "apiBaseUrl": "",
+      "stripePublishableKey": "",
+      "freeShippingThreshold": 60
+    }
+  }
+}
