@@ -9,7 +9,7 @@ import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { StoneSwatch } from '@/components/StoneSwatch';
 import { Chip, CircleButton, Kicker } from '@/components/ui';
 import { Icon } from '@/components/Icon';
-import { basePrice, CATEGORY_LABELS, money } from '@/domain/pricing';
+import { basePrice, CATEGORY_LABELS, money, SPRAY_CLAIM } from '@/domain/pricing';
 import { Category } from '@/domain/types';
 import { useCatalog } from '@/state/catalog';
 import { colors, fonts, radius, space, type } from '@/theme';
@@ -47,7 +47,7 @@ export default function ShopScreen() {
       {status === 'ready' && products.length > 0 && (<>
         <View style={s.sectionHead}>
           <View><Kicker>The twelve</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">Room sprays</Text></View>
-          <Text style={[type.small, { color: colors.muted, paddingBottom: 4 }]}>{tribes.length} sprays · up to 3 days</Text>
+          <Text style={[type.small, { color: colors.muted, paddingBottom: 4 }]}>{SPRAY_CLAIM}</Text>
         </View>
         <View style={s.stoneFrame}>
           {tribes.map((p, i) => (

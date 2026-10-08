@@ -102,4 +102,6 @@ export const categoryLabel = (c: Category) => CATEGORY_LABELS[c];
 export const CATEGORY_KICKER: Record<Category, string> = {
   spray: 'ROOM SPRAY', incense: 'HAND-ROLLED INCENSE', rock: 'ROCK INCENSE', oil: 'BURNING OIL', censer: 'BRASS CENSER', charcoal: 'CHARCOAL',
 };
+/** Brand claim: three pumps freshen a room for up to three days (not a product count). */
+export const SPRAY_CLAIM = '3 sprays · up to 3 days';
 export const money = (n: number) => `$${Number.isInteger(n) ? n : n.toFixed(2)}`;

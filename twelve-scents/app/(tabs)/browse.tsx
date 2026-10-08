@@ -7,7 +7,7 @@ import { ProductCard } from '@/components/ProductViews';
 import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { Chip } from '@/components/ui';
-import { CATEGORY_LABELS, filterProducts, SortKey } from '@/domain/pricing';
+import { CATEGORY_LABELS, filterProducts, SortKey, SPRAY_CLAIM } from '@/domain/pricing';
 import { Category } from '@/domain/types';
 import { useCatalog } from '@/state/catalog';
 import { colors, fonts, radius, space, type } from '@/theme';
@@ -54,7 +54,7 @@ export default function BrowseScreen() {
           {CARD_CATS.map((c) => {
             const list = products.filter((p) => p.category === c);
             if (!list.length) return null;
-            const sub = c === 'spray' ? `${list.length} sprays · up to 3 days` : `${list.length} ${list.length === 1 ? 'product' : 'products'}`;
+            const sub = c === 'spray' ? SPRAY_CLAIM : `${list.length} ${list.length === 1 ? 'product' : 'products'}`;
             return (
               <Pressable key={c} accessibilityRole="button" accessibilityLabel={`${CATEGORY_LABELS[c]}, ${sub}`} onPress={() => setCat(c)}>
                 <Photo uri={list[0].images[0]} tone={list[0].colorHex} seed={ORDER.indexOf(c) + 2} scrim="left" style={s.catCard}>
