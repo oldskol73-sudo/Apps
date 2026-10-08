@@ -3,7 +3,7 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useRouter } from 'expo-router';
 import { Icon } from '@/components/Icon';
 import { Photo } from '@/components/Photo';
-import { kickerFor, ProductRow, seedOf, useQuickAdd } from '@/components/ProductViews';
+import { kickerFor, ProductRow, QuickAdd, seedOf } from '@/components/ProductViews';
 import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { CircleButton, Kicker, OutlineButton, PrimaryButton } from '@/components/ui';
@@ -29,7 +29,6 @@ const STEPS = [
 
 export default function FinderScreen() {
   const router = useRouter();
-  const add = useQuickAdd();
   const { status, products, reload } = useCatalog();
   const [step, setStep] = useState<0 | 1 | 2 | 3>(0);
   const [type_, setType] = useState<Category | null>(null);
@@ -108,7 +107,7 @@ export default function FinderScreen() {
                     <Text style={[s.recTag]}>{results[0].tagline}</Text>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 8 }}>
                       <Text style={[type.body, { color: colors.onDark }]}>From {money(basePrice(results[0]))}</Text>
-                      <CircleButton icon="plus" label={`Add ${results[0].name} to bag`} color={colors.btnText} bg={colors.brassFill} border={colors.brassFill} onPress={() => add(results[0])} />
+                      <QuickAdd product={results[0]} />
                     </View>
                   </View>
                 </Photo>

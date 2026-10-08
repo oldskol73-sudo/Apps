@@ -10,15 +10,21 @@ import { CircleButton, Kicker } from './ui';
 
 export const kickerFor = (p: Product) => (p.numeral && p.stone ? `${p.numeral} · ${p.stone} · ${CATEGORY_KICKER[p.category]}` : CATEGORY_KICKER[p.category]);
 const seedOf = (p: Product) => p.id.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-export const useQuickAdd = () => {
+export const firstAvailable = (p: Product) => p.variants.find((v) => v.inStock !== false);
+
+/** Quick-add (+) button for the first in-stock variant, or a "Sold out" label. */
+export function QuickAdd({ product, solid = true }: { product: Product; solid?: boolean }) {
   const { addToCart } = useStore();
-  return (p: Product) => addToCart(p, p.variants[0].id);
-};
+  const v = firstAvailable(product);
+  if (!v) return <Text style={[type.small, { color: colors.muted, paddingHorizontal: 8 }]} accessibilityLabel={`${product.name} is sold out`}>Sold out</Text>;
+  return solid
+    ? <CircleButton icon="plus" label={`Add ${product.name} to bag`} onPress={() => addToCart(product, v.id)} color={colors.btnText} bg={colors.brassFill} border={colors.brassFill} />
+    : <CircleButton icon="plus" label={`Add ${product.name} to bag`} onPress={() => addToCart(product, v.id)} />;
+}
 
 /** 2-column grid card: photo, kicker, name, "From $X", quick-add. */
 export function ProductCard({ product, width }: { product: Product; width?: number }) {
   const router = useRouter();
-  const add = useQuickAdd();
   return (
     <View style={[s.card, width ? { width } : { flex: 1 }]}>
       <Pressable accessibilityRole="button" accessibilityLabel={`${product.name}, from ${money(basePrice(product))}`} onPress={() => router.push(`/product/${product.id}`)}>
@@ -29,7 +35,7 @@ export function ProductCard({ product, width }: { product: Product; width?: numb
           <Text style={[type.small, { color: colors.textSecondary }]}>From {money(basePrice(product))}</Text>
         </View>
       </Pressable>
-      <View style={s.add}><CircleButton icon="plus" label={`Add ${product.name} to bag`} onPress={() => add(product)} size={44} color={colors.btnText} bg={colors.brassFill} border={colors.brassFill} /></View>
+      <View style={s.add}><QuickAdd product={product} /></View>
     </View>
   );
 }
@@ -37,7 +43,6 @@ export function ProductCard({ product, width }: { product: Product; width?: numb
 /** Compact list row with quick-add (Essentials). */
 export function ProductRow({ product }: { product: Product }) {
   const router = useRouter();
-  const add = useQuickAdd();
   return (
     <View style={s.row}>
       <Pressable style={s.rowMain} accessibilityRole="button" accessibilityLabel={`${product.name}, from ${money(basePrice(product))}`} onPress={() => router.push(`/product/${product.id}`)}>
@@ -47,7 +52,7 @@ export function ProductRow({ product }: { product: Product }) {
           <Text style={[type.small, { color: colors.textSecondary }]} numberOfLines={1}>{product.variants[0].label} · {money(basePrice(product))}</Text>
         </View>
       </Pressable>
-      <CircleButton icon="plus" label={`Add ${product.name} to bag`} onPress={() => add(product)} />
+      <QuickAdd product={product} solid={false} />
     </View>
   );
 }

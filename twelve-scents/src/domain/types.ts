@@ -2,7 +2,7 @@ export type Category = 'spray' | 'incense' | 'rock' | 'oil' | 'censer' | 'charco
 export type Character = 'Warm' | 'Fresh' | 'Grounding' | 'Bright';
 export type Plan = 'once' | 'subscription';
 
-export interface Variant { id: string; label: string; price: number }
+export interface Variant { id: string; label: string; price: number; /** false = sold out (undefined means available) */ inStock?: boolean }
 export interface Product {
   id: string;
   category: Category;
@@ -10,6 +10,8 @@ export interface Product {
   stone?: string;
   numeral?: string;
   colorHex: string;
+  /** Part of the Twelve Tribes collection (drives the stone grid). Undefined is treated as true for stone-bearing sprays. */
+  tribe?: boolean;
   character: Character;
   tagline: string;
   description: string;

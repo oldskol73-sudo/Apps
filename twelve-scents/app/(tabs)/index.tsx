@@ -20,6 +20,7 @@ export default function ShopScreen() {
   const router = useRouter();
   const { status, products, reload } = useCatalog();
   const sprays = products.filter((p) => p.category === 'spray');
+  const tribes = sprays.filter((p) => p.tribe ?? !!p.stone).slice(0, 12);
   const toBurn = products.filter((p) => ['incense', 'rock', 'censer', 'oil'].includes(p.category));
   const essentials = ['charcoal-quick-light', 'rock-frankincense', 'censer-tabletop-brass', 'incense-sandalwood-cedar'].map((id) => products.find((p) => p.id === id)).filter(Boolean) as typeof products;
   const openCat = (c: Category) => router.navigate({ pathname: '/browse', params: { cat: c } });
@@ -46,15 +47,15 @@ export default function ShopScreen() {
       {status === 'ready' && products.length > 0 && (<>
         <View style={s.sectionHead}>
           <View><Kicker>The twelve</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">Room sprays</Text></View>
-          <Text style={[type.small, { color: colors.muted, paddingBottom: 4 }]}>{sprays.length} sprays · up to 3 days</Text>
+          <Text style={[type.small, { color: colors.muted, paddingBottom: 4 }]}>{tribes.length} sprays · up to 3 days</Text>
         </View>
         <View style={s.stoneFrame}>
-          {sprays.map((p, i) => (
-            <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={`${p.name}, ${p.stone}`} onPress={() => router.push(`/product/${p.id}`)}
-              style={[s.stoneCell, i % 3 !== 2 && s.cellR, i < sprays.length - 3 && s.cellB]}>
+          {tribes.map((p, i) => (
+            <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={p.stone ? `${p.name}, ${p.stone}` : p.name} onPress={() => router.push(`/product/${p.id}`)}
+              style={[s.stoneCell, i % 3 !== 2 && s.cellR, i < tribes.length - 3 && s.cellB]}>
               <StoneSwatch hex={p.colorHex} />
               <Text style={s.stoneName}>{p.name}</Text>
-              <Text style={s.stoneSub}>{p.stone}</Text>
+              <Text style={s.stoneSub}>{p.stone ?? ' '}</Text>
             </Pressable>
           ))}
         </View>

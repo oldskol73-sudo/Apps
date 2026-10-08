@@ -30,16 +30,25 @@ Copy `.env.example` to `.env` (all `EXPO_PUBLIC_*`, read in `src/data/index.ts`)
 - `src/state` – store (cart, favourites, user, subscriptions, orders; persisted to AsyncStorage) and catalog provider (loading/ready/error).
 - `app/` – routes: `(tabs)` Shop · Browse · Finder · Bag · Account; pushed `product/[id]`, `checkout`, `confirmed`. Search is the header magnifier → Browse with the search field open.
 
-### WooCommerce setup
-The mapping lives in `src/data/wooMapping.ts` (`DEFAULT_MAPPING`). In WooCommerce:
-- **Categories** (by slug): `room-sprays`, `incense`, `rock-incense`, `burning-oils`, `brass-censers`, `charcoal`. Products in other categories are skipped. Adjust `categorySlugs` if your slugs differ.
-- **Global/custom attributes** (non-variation, visible): `Stone`, `Numeral`, `Character` (Warm/Fresh/Grounding/Bright), optional `Colour` (hex, e.g. `#6E1F35`; otherwise derived from the stone). Other non-variation attributes (e.g. Top/Heart/Base) become the three detail columns.
-- **Variable products**: variation attributes form the Type dropdown. Simple products get a single variant.
-- **Subscribe & save**: tag products `subscribe`.
-- **Pairings** come from cross-sells/up-sells/related products. Verify your Woo version exposes these on the Store API; if not, the section is simply hidden.
-- Description -> product description; short description (first line) -> italic tagline.
+### WooCommerce (twelve12scents.com)
+`EXPO_PUBLIC_WOO_URL=https://twelve12scents.com` switches the app to the live catalog (public Store API, no keys). The mapping in `src/data/wooMapping.ts` was written against the store as inspected (43 simple products, 7 categories, no attributes/tags):
 
-Not yet done for Woo: placing orders (checkout is still the mock), accounts/points/subscriptions on the server. Those need either the Store API cart + checkout endpoints with Stripe (WooCommerce Stripe Gateway), or custom endpoints, plus a subscriptions plugin (WooCommerce Subscriptions or similar) and a points plugin. Consumer keys/secrets must stay on a server, never in the app.
+| Woo category slug | App |
+|---|---|
+| `twelve-tribes-collection` | Room spray, flagged `tribe` (drives the Shop stone grid) |
+| `room-car-fresheners` | Room spray (not in the stone grid) |
+| `incense` · `rock-frankincense` · `burning-oils` · `charcoal` | Incense · Rock Incense · Burning Oils · Charcoal |
+| `holders-burners` | Brass Censers (holders, boxes and burners) |
+
+- **Sizes become variants.** The store lists each size as its own product ("11″ Incense — 100 Sticks"). Names are split on " — " and merged into one product with a Type dropdown. Variant ids are the Woo product ids (what a cart/checkout call will need).
+- **Sold out**: `is_in_stock: false` shows "Sold out" and disables add-to-bag.
+- **Stone / numeral / swatch colour** come from the brand table for the tribe names in the spec. Ephraim and Manasseh are in the store but not in the spec, so they get a brass swatch and no stone until you supply them (add to `TRIBES`). Dan and Joseph are in the spec but not in the store.
+- **Character** (used by the Finder) is not a store field, so it is inferred from the product copy by keyword (`inferCharacter`), default Warm. Better: add a `Character` product attribute in WooCommerce and it will be used instead (same for `Stone`, `Numeral`, `Colour`).
+- **Pairings**: no cross-sells are set, so companions are suggested by category (`fillPairings`). Set real cross-sells in WooCommerce and they take over.
+- **Subscribe & save** is off for every product until you tag products `subscribe` AND run a subscriptions plugin (none is installed).
+- The regression fixture `__tests__/fixtures/twelve12scents.json` is a public-data export of the live catalog.
+
+**Not done for Woo:** order placement, accounts, points and subscriptions (the checkout is still the mock). Notes from inspecting the store: payments are WooPayments (Stripe-based; Apple Pay / Google Pay via its express checkout), PayPal and COD; shipping has flat-rate only, so the app's "free shipping over $60" and its $14 express option are **not** something the store currently offers. Consumer keys must stay on a server, never in the app.
 
 ### Catalog data
 Only the 12 tribe sprays (names, stones, colours, $35) are fixed by spec. Everything else is placeholder. Edit `scripts/generate-catalog.js` and run `npm run catalog`, or host the same JSON shape at `API_BASE_URL/catalog.json` to change content without a release. Image URLs in the catalog point at a placeholder CDN; until real photos exist, `Photo` renders a generated warm "bokeh" plate tinted with the stone colour.

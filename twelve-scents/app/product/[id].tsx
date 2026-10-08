@@ -44,7 +44,8 @@ export default function ProductScreen() {
   if (status === 'error') return shell(<ErrorView message="We couldn’t load this product." onRetry={reload} />);
   if (!product) return shell(<EmptyView dark title="Product not found" body="It may have been removed from the catalog." action="Browse all" onAction={() => router.replace('/browse')} />);
 
-  const variant = product.variants.find((v) => v.id === variantId) ?? product.variants[0];
+  const variant = product.variants.find((v) => v.id === variantId) ?? product.variants.find((v) => v.inStock !== false) ?? product.variants[0];
+  const soldOut = variant.inStock === false;
   const plan = sub && product.subscribable ? 'subscription' : 'once';
   const total = lineTotal(variant.price, qty, plan);
   const fav = state.user.favourites.includes(product.id);
@@ -65,7 +66,7 @@ export default function ProductScreen() {
         </Photo>
 
         <View style={s.thumbs}>
-          {VIEWS.map((v, i) => (
+          {VIEWS.slice(0, Math.max(1, Math.min(VIEWS.length, product.images.length))).map((v, i) => (
             <Pressable key={v} onPress={() => { tap(); setImg(i); }} accessibilityRole="button" accessibilityLabel={`${v} photo`} accessibilityState={{ selected: img === i }}
               style={[s.thumb, img === i && { borderColor: colors.brassFill, borderWidth: 2 }]}>
               <Photo uri={images[i] ?? images[0]} tone={product.colorHex} seed={seedOf(product) + i} style={StyleSheet.absoluteFill} />
@@ -78,26 +79,26 @@ export default function ProductScreen() {
 
         <View style={{ paddingHorizontal: space.gutter }}>
           <Text style={[type.body, { color: colors.onDark, fontFamily: fonts.light, fontSize: 16, lineHeight: 25 }]}>{product.description}</Text>
-          <View style={s.details}>
+          {product.details.length > 0 && <View style={s.details}>
             {product.details.slice(0, 3).map((d, i) => (
               <View key={d.label} style={[s.detail, i > 0 && { borderLeftWidth: StyleSheet.hairlineWidth, borderLeftColor: colors.hairlineDark }]}>
                 <Kicker color={colors.brassLight} style={{ fontSize: 10 }}>{d.label}</Kicker>
                 <Text style={[type.small, { color: colors.onDark, marginTop: 4 }]}>{d.value}</Text>
               </View>
             ))}
-          </View>
+          </View>}
 
           <View style={s.panel}>
             <Text style={[type.small, { color: colors.onDarkMuted, marginBottom: 6 }]}>Type</Text>
             <Pressable onPress={() => { tap(); setOpen(!open); }} accessibilityRole="button" accessibilityLabel={`Type: ${variant.label}, ${money(variant.price)}. ${open ? 'Collapse' : 'Expand'} options`} accessibilityState={{ expanded: open }} style={s.dropdown}>
               <Text style={[type.body, { color: colors.onDark, flex: 1 }]}>{variant.label}{product.variants.length > 1 ? '' : ''}</Text>
-              <Text style={[type.body, { color: colors.onDarkMuted, marginRight: 8 }]}>{money(unitPrice(variant.price, plan))}</Text>
+              <Text style={[type.body, { color: colors.onDarkMuted, marginRight: 8 }]}>{soldOut ? 'Sold out' : money(unitPrice(variant.price, plan))}</Text>
               <Icon name="down" size={20} color={colors.onDark} />
             </Pressable>
             {open && product.variants.map((v) => (
               <Pressable key={v.id} onPress={() => { setVariantId(v.id); setOpen(false); }} accessibilityRole="radio" accessibilityState={{ selected: v.id === variant.id }} style={s.option}>
                 <Text style={[type.body, { color: v.id === variant.id ? colors.brassLight : colors.onDark, flex: 1 }]}>{v.label}</Text>
-                <Text style={[type.body, { color: colors.onDarkMuted }]}>{money(v.price)}</Text>
+                <Text style={[type.body, { color: colors.onDarkMuted }]}>{v.inStock === false ? 'Sold out' : money(v.price)}</Text>
               </Pressable>
             ))}
             {product.subscribable && (
@@ -113,7 +114,7 @@ export default function ProductScreen() {
 
           <View style={s.buyRow}>
             <Stepper dark qty={qty} min={1} onChange={setQty} />
-            <PrimaryButton style={{ flex: 1 }} label={`Add to Bag · ${money(total)}`} onPress={() => { addToCart(product, variant.id, qty, plan); setQty(1); }} />
+            <PrimaryButton style={{ flex: 1 }} disabled={soldOut} label={soldOut ? 'Sold out' : `Add to Bag · ${money(total)}`} onPress={() => { addToCart(product, variant.id, qty, plan); setQty(1); }} />
           </View>
 
           {pairings.length > 0 && (
