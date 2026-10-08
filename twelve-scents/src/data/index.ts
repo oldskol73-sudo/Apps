@@ -10,9 +10,10 @@ export const config = {
   wooUrl: process.env.EXPO_PUBLIC_WOO_URL || extra.wooUrl || '',
   apiBaseUrl: process.env.EXPO_PUBLIC_API_BASE_URL || extra.apiBaseUrl || '',
   stripeKey: process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY || extra.stripePublishableKey || '',
-  freeShippingThreshold: Number(process.env.EXPO_PUBLIC_FREE_SHIPPING_THRESHOLD || extra.freeShippingThreshold || 60),
 };
+/** Feature flags. Subscriptions are intentionally dark (hidden) until a subscriptions backend exists. */
+export const features = { subscriptions: process.env.EXPO_PUBLIC_FEATURE_SUBSCRIPTIONS === 'true' };
 const mock = new MockCatalogRepository();
 export const catalogRepository: CatalogRepository = config.wooUrl
-  ? new WooCommerceCatalogRepository(config.wooUrl, asyncLocalStore, { freeShippingThreshold: config.freeShippingThreshold })
+  ? new WooCommerceCatalogRepository(config.wooUrl, asyncLocalStore)
   : config.apiBaseUrl ? new RemoteCatalogRepository(config.apiBaseUrl, mock) : mock;

@@ -8,7 +8,7 @@ cd twelve-scents
 npm install
 npm start          # then press i (iOS sim), a (Android emulator) or w (web)
 npm run typecheck  # tsc --noEmit
-npm test           # unit tests (cart math, shipping, points, subscription discount, finder ranking, search)
+npm test           # unit tests (cart math, shipping zones, points, subscription discount, finder ranking, search, WooCommerce mapping)
 ```
 The app runs fully on mock data with no keys. Fonts (Bodoni Moda, Jost; OFL) are bundled via `@expo-google-fonts/*`.
 
@@ -20,7 +20,7 @@ Copy `.env.example` to `.env` (all `EXPO_PUBLIC_*`, read in `src/data/index.ts`)
 | `EXPO_PUBLIC_WOO_URL` | WooCommerce site root, e.g. `https://yourstore.com`. Enables the live catalog via the public Store API (no keys). Takes priority over the options below |
 | `EXPO_PUBLIC_API_BASE_URL` | If set, catalog is fetched from `{url}/catalog.json` (falls back to the bundled copy when offline) |
 | `EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key for the Payment Sheet |
-| `EXPO_PUBLIC_FREE_SHIPPING_THRESHOLD` | Free-shipping threshold, default `60` (the catalog JSON's `freeShippingThreshold` wins when present) |
+| `EXPO_PUBLIC_FEATURE_SUBSCRIPTIONS` | `true` to show Subscribe & save and the Account deliveries section. Default `false` (dark) until a subscriptions backend exists |
 
 ## Architecture
 - `src/theme` – every colour/type/shape token. Views import tokens; no hard-coded colours.
@@ -42,13 +42,14 @@ Copy `.env.example` to `.env` (all `EXPO_PUBLIC_*`, read in `src/data/index.ts`)
 
 - **Sizes become variants.** The store lists each size as its own product ("11″ Incense — 100 Sticks"). Names are split on " — " and merged into one product with a Type dropdown. Variant ids are the Woo product ids (what a cart/checkout call will need).
 - **Sold out**: `is_in_stock: false` shows "Sold out" and disables add-to-bag.
-- **Stone / numeral / swatch colour** come from the brand table for the tribe names in the spec. Ephraim and Manasseh are in the store but not in the spec, so they get a brass swatch and no stone until you supply them (add to `TRIBES`). Dan and Joseph are in the spec but not in the store.
+- **Stone / numeral / swatch colour** come from the brand table (`TRIBES`). Ephraim is a black-and-white banded swatch and Manasseh dark brown, neither with a stone name. Dan and Joseph are in the brand table but not in the store.
 - **Character** (used by the Finder) is not a store field, so it is inferred from the product copy by keyword (`inferCharacter`), default Warm. Better: add a `Character` product attribute in WooCommerce and it will be used instead (same for `Stone`, `Numeral`, `Colour`).
-- **Pairings**: no cross-sells are set, so companions are suggested by category (`fillPairings`). Set real cross-sells in WooCommerce and they take over.
-- **Subscribe & save** is off for every product until you tag products `subscribe` AND run a subscriptions plugin (none is installed).
+- **Subscriptions are dark**: hidden everywhere (product toggle, Account deliveries, bag labels) behind `features.subscriptions` (`EXPO_PUBLIC_FEATURE_SUBSCRIPTIONS`). Code and the 10% discount maths stay in place for a later iteration.
+- **Shipping** mirrors the store's WooCommerce zones (`src/domain/shipping.ts`): flat rate by destination state ($12.99 East Coast with free local pickup, $15.99 Southern states, $19.99 Midwest & West) and nothing else. No free-shipping threshold and no Express. States outside the zones can't place an order. Keep the table in sync with WooCommerce → Shipping, or override with `shipping.zones` in the catalog JSON.
+- There is no "Complete the ritual" cross-sell.
 - The regression fixture `__tests__/fixtures/twelve12scents.json` is a public-data export of the live catalog.
 
-**Not done for Woo:** order placement, accounts, points and subscriptions (the checkout is still the mock). Notes from inspecting the store: payments are WooPayments (Stripe-based; Apple Pay / Google Pay via its express checkout), PayPal and COD; shipping has flat-rate only, so the app's "free shipping over $60" and its $14 express option are **not** something the store currently offers. Consumer keys must stay on a server, never in the app.
+**Not done for Woo:** order placement, accounts, points and subscriptions (the checkout is still the mock). Payments on the store are WooPayments (Stripe-based; Apple Pay / Google Pay via its express checkout), PayPal and COD. Consumer keys/secrets must stay on a server, never in the app.
 
 ### Catalog data
 Only the 12 tribe sprays (names, stones, colours, $35) are fixed by spec. Everything else is placeholder. Edit `scripts/generate-catalog.js` and run `npm run catalog`, or host the same JSON shape at `API_BASE_URL/catalog.json` to change content without a release. Image URLs in the catalog point at a placeholder CDN; until real photos exist, `Photo` renders a generated warm "bokeh" plate tinted with the stone colour.

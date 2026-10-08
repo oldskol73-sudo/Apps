@@ -8,7 +8,8 @@ import { Photo } from '@/components/Photo';
 import { kickerFor, seedOf } from '@/components/ProductViews';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { CircleButton, Kicker, PrimaryButton, Stepper, Switch2, tap } from '@/components/ui';
-import { basePrice, lineTotal, money, SUBSCRIPTION_DISCOUNT, unitPrice } from '@/domain/pricing';
+import { features } from '@/data';
+import { lineTotal, money, SUBSCRIPTION_DISCOUNT, unitPrice } from '@/domain/pricing';
 import { track } from '@/services/analytics';
 import { useCatalog } from '@/state/catalog';
 import { useStore } from '@/state/store';
@@ -46,10 +47,10 @@ export default function ProductScreen() {
 
   const variant = product.variants.find((v) => v.id === variantId) ?? product.variants.find((v) => v.inStock !== false) ?? product.variants[0];
   const soldOut = variant.inStock === false;
-  const plan = sub && product.subscribable ? 'subscription' : 'once';
+  const canSubscribe = features.subscriptions && product.subscribable;
+  const plan = sub && canSubscribe ? 'subscription' : 'once';
   const total = lineTotal(variant.price, qty, plan);
   const fav = state.user.favourites.includes(product.id);
-  const pairings = product.pairings.map(byId).filter(Boolean) as NonNullable<ReturnType<typeof byId>>[];
   const images = product.images.length ? product.images : [''];
 
   return (
@@ -101,7 +102,7 @@ export default function ProductScreen() {
                 <Text style={[type.body, { color: colors.onDarkMuted }]}>{v.inStock === false ? 'Sold out' : money(v.price)}</Text>
               </Pressable>
             ))}
-            {product.subscribable && (
+            {canSubscribe && (
               <View style={s.subRow}>
                 <View style={{ flex: 1, paddingRight: 12 }}>
                   <Text style={[type.label, { color: colors.onDark }]}>Subscribe & save {SUBSCRIPTION_DISCOUNT * 100}%</Text>
@@ -117,22 +118,6 @@ export default function ProductScreen() {
             <PrimaryButton style={{ flex: 1 }} disabled={soldOut} label={soldOut ? 'Sold out' : `Add to Bag · ${money(total)}`} onPress={() => { addToCart(product, variant.id, qty, plan); setQty(1); }} />
           </View>
 
-          {pairings.length > 0 && (
-            <View style={{ marginTop: 36 }}>
-              <Kicker color={colors.brassLight}>Pairs well</Kicker>
-              <Text style={[type.section, { color: colors.onDark, marginBottom: 6 }]} accessibilityRole="header">Complete the ritual</Text>
-              {pairings.map((p) => (
-                <Pressable key={p.id} onPress={() => router.push(`/product/${p.id}`)} accessibilityRole="button" accessibilityLabel={`${p.name}, from ${money(basePrice(p))}`} style={s.pairRow}>
-                  <Photo uri={p.images[0]} tone={p.colorHex} seed={seedOf(p)} style={s.pairThumb} />
-                  <View style={{ flex: 1 }}>
-                    <Text style={{ fontFamily: fonts.display, fontSize: 19, color: colors.onDark }}>{p.name}</Text>
-                    <Text style={[type.small, { color: colors.onDarkMuted }]}>From {money(basePrice(p))}</Text>
-                  </View>
-                  <Icon name="arrow" size={20} color={colors.brassLight} />
-                </Pressable>
-              ))}
-            </View>
-          )}
         </View>
       </ScrollView>
       {top(

@@ -37,14 +37,16 @@ export const DEFAULT_MAPPING: WooMapping = {
   attr: { stone: 'stone', numeral: 'numeral', character: 'character', colour: 'colour', hidden: ['stone', 'numeral', 'character', 'colour', 'color'] },
 };
 
-/** Breastplate stone, numeral and colour per tribe name (brand spec). Tribes not listed here get no stone and a brass swatch. */
-export const TRIBES: Record<string, { stone: string; numeral: string; colour: string }> = {
+/** Breastplate stone, numeral and colour per tribe name (brand spec). Tribes without a stone (Ephraim, Manasseh) only carry a swatch colour. */
+export const TRIBES: Record<string, { stone?: string; numeral?: string; colour: string; band?: string }> = {
   reuben: { stone: 'Sardius', numeral: 'I', colour: '#8E2B25' }, simeon: { stone: 'Topaz', numeral: 'II', colour: '#B0822C' },
   levi: { stone: 'Carbuncle', numeral: 'III', colour: '#6E1F35' }, judah: { stone: 'Emerald', numeral: 'IV', colour: '#2F6E4A' },
   issachar: { stone: 'Sapphire', numeral: 'V', colour: '#27447A' }, zebulun: { stone: 'Diamond', numeral: 'VI', colour: '#7F8C8F' },
   dan: { stone: 'Ligure', numeral: 'VII', colour: '#A0522D' }, naphtali: { stone: 'Agate', numeral: 'VIII', colour: '#5F7A63' },
   gad: { stone: 'Amethyst', numeral: 'IX', colour: '#5B3A7A' }, asher: { stone: 'Beryl', numeral: 'X', colour: '#8A6A2F' },
   joseph: { stone: 'Onyx', numeral: 'XI', colour: '#3A3430' }, benjamin: { stone: 'Jasper', numeral: 'XII', colour: '#8C3D2E' },
+  // Not on the breastplate list: Joseph's sons. Swatches per the brand: black-and-white banded, and dark brown.
+  ephraim: { colour: '#1A1715', band: '#F4EEE5' }, manasseh: { colour: '#4A2C1A' },
 };
 const BRASS = '#C99A3F';
 const CHARACTERS: Character[] = ['Warm', 'Fresh', 'Grounding', 'Bright'];
@@ -120,7 +122,7 @@ export function mapWooProduct(p: WooProduct, variations: WooVariation[], m: WooM
   if (variants.every((v) => v.price <= 0)) return null;
 
   return {
-    id: `woo-${p.id}`, category, name: base, stone, numeral, colorHex, tribe: isTribe, character,
+    id: `woo-${p.id}`, category, name: base, stone, numeral, colorHex, colorHex2: isTribe ? tribeInfo?.band : undefined, tribe: isTribe, character,
     tagline: short.split('\n')[0] ?? '', description, details, variants,
     subscribable: !!p.tags?.some((t) => t.slug === m.subscribeTag),
     pairings: [...(p.cross_sell_ids ?? []), ...(p.upsell_ids ?? []), ...(p.related_ids ?? [])].slice(0, 4).map((i) => `woo-${i}`),
@@ -151,17 +153,4 @@ export function groupProducts(products: Product[]): Product[] {
     }
   }
   return out;
-}
-
-/** Cross-sells are not set in the store, so suggest sensible companions by category (only where none exist). */
-const COMPANIONS: Record<Category, Category[]> = {
-  spray: ['incense', 'censer'], incense: ['censer', 'charcoal'], rock: ['charcoal', 'censer'],
-  oil: ['censer'], censer: ['charcoal', 'rock'], charcoal: ['rock', 'censer'],
-};
-export function fillPairings(products: Product[]): Product[] {
-  return products.map((p) => {
-    if (p.pairings.some((id) => products.some((q) => q.id === id))) return p;
-    const picks = COMPANIONS[p.category].flatMap((c) => products.filter((q) => q.category === c && q.variants.some((v) => v.inStock !== false)).slice(0, 2));
-    return { ...p, pairings: picks.slice(0, 3).map((q) => q.id) };
-  });
 }

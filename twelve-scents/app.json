@@ -15,8 +15,7 @@
     "experiments": { "typedRoutes": false },
     "extra": {
       "apiBaseUrl": "",
-      "stripePublishableKey": "",
-      "freeShippingThreshold": 60
+      "stripePublishableKey": ""
     }
   }
 }

@@ -9,7 +9,7 @@ export interface CartLine { item: CartItem; product: Product; variant: Variant; 
 /** Joins cart items with catalog data; silently drops items whose product left the catalog. */
 export function useCartLines() {
   const { state } = useStore();
-  const { byId, threshold, status } = useCatalog();
+  const { byId, status } = useCatalog();
   return useMemo(() => {
     const lines: CartLine[] = [];
     for (const item of state.cart) {
@@ -18,6 +18,6 @@ export function useCartLines() {
       if (product && variant) lines.push({ item, product, variant, unit: unitPrice(variant.price, item.plan), total: lineTotal(variant.price, item.qty, item.plan) });
     }
     const sub = subtotal(lines.map((l) => ({ price: l.variant.price, qty: l.item.qty, plan: l.item.plan })));
-    return { lines, sub, threshold, status, hydrated: state.hydrated };
-  }, [state.cart, state.hydrated, byId, threshold, status]);
+    return { lines, sub, status, hydrated: state.hydrated };
+  }, [state.cart, state.hydrated, byId, status]);
 }

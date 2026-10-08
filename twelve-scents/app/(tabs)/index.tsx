@@ -53,7 +53,7 @@ export default function ShopScreen() {
           {tribes.map((p, i) => (
             <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={p.stone ? `${p.name}, ${p.stone}` : p.name} onPress={() => router.push(`/product/${p.id}`)}
               style={[s.stoneCell, i % 3 !== 2 && s.cellR, i < tribes.length - 3 && s.cellB]}>
-              <StoneSwatch hex={p.colorHex} />
+              <StoneSwatch hex={p.colorHex} band={p.colorHex2} />
               <Text style={s.stoneName}>{p.name}</Text>
               <Text style={s.stoneSub}>{p.stone ?? ' '}</Text>
             </Pressable>

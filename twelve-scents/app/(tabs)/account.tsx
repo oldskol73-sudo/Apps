@@ -7,6 +7,7 @@ import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { StoneSwatch } from '@/components/StoneSwatch';
 import { Kicker, OutlineButton } from '@/components/ui';
+import { features } from '@/data';
 import { money, REWARD_STEP_POINTS, REWARD_STEP_VALUE, rewardProgress } from '@/domain/pricing';
 import { authService, AuthSession } from '@/services/auth';
 import { useCatalog } from '@/state/catalog';
@@ -24,7 +25,7 @@ export default function AccountScreen() {
   const [authError, setAuthError] = useState<string | null>(null);
   const { user, subscriptions, orders } = state;
   const prog = rewardProgress(user.points);
-  const stones = products.filter((p) => p.category === 'spray').slice(0, 12);
+  const stones = products.filter((p) => p.category === 'spray' && p.tribe !== false).slice(0, 12);
 
   const signIn = async (provider: AuthSession['provider']) => {
     try { setAuthError(null); setSession(await authService.signIn(provider)); } catch { setAuthError('Sign-in failed. Please try again.'); }
@@ -49,7 +50,7 @@ export default function AccountScreen() {
         <View style={s.track}>
           {Array.from({ length: 12 }).map((_, i) => (
             <View key={i} style={{ opacity: i < prog.stonesLit ? 1 : 0.28 }}>
-              <StoneSwatch hex={stones[i]?.colorHex ?? colors.brassFill} size={24} />
+              <StoneSwatch hex={stones[i]?.colorHex ?? colors.brassFill} band={stones[i]?.colorHex2} size={24} />
             </View>
           ))}
         </View>
@@ -73,6 +74,7 @@ export default function AccountScreen() {
       {status === 'loading' && <LoadingView />}
       {status === 'error' && <ErrorView onRetry={reload} />}
       {status === 'ready' && (<>
+        {features.subscriptions && (<>
         <View style={s.head}><Kicker>Subscriptions</Kicker><Text style={s.h2} accessibilityRole="header">Your deliveries</Text></View>
         <View style={[s.mx, { gap: 10 }]}>
           {subscriptions.length === 0 && <View style={s.card}><EmptyView title="No subscriptions" body="Subscribe & save 10% on any spray." action="Browse sprays" onAction={() => router.navigate({ pathname: '/browse', params: { cat: 'spray' } })} /></View>}
@@ -92,6 +94,8 @@ export default function AccountScreen() {
             );
           })}
         </View>
+
+        </>)}
 
         <View style={s.head}><Kicker>Orders</Kicker><Text style={s.h2} accessibilityRole="header">History</Text></View>
         <View style={[s.mx, { gap: 10 }]}>

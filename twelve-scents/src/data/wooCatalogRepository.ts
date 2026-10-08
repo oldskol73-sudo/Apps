@@ -1,5 +1,5 @@
 import { Catalog, CatalogRepository, LocalStore } from './repository';
-import { DEFAULT_MAPPING, fillPairings, groupProducts, mapWooProduct, WooMapping, WooProduct, WooVariation } from './wooMapping';
+import { DEFAULT_MAPPING, groupProducts, mapWooProduct, WooMapping, WooProduct, WooVariation } from './wooMapping';
 
 const CACHE_KEY = 'ts.catalog.woo.v1';
 
@@ -13,7 +13,7 @@ export class WooCommerceCatalogRepository implements CatalogRepository {
   constructor(
     private siteUrl: string,
     private store: LocalStore,
-    private opts: { freeShippingThreshold: number; mapping?: WooMapping; fetchImpl?: typeof fetch } = { freeShippingThreshold: 60 },
+    private opts: { mapping?: WooMapping; fetchImpl?: typeof fetch } = {},
   ) {}
 
   private get base() { return `${this.siteUrl.replace(/\/$/, '')}/wp-json/wc/store/v1`; }
@@ -46,9 +46,9 @@ export class WooCommerceCatalogRepository implements CatalogRepository {
       const raw = await this.allProducts();
       const mapping = this.opts.mapping ?? DEFAULT_MAPPING;
       const mapped = await Promise.all(raw.map(async (p) => mapWooProduct(p, await this.variations(p), mapping)));
-      const products = fillPairings(groupProducts(mapped.filter((p): p is NonNullable<typeof p> => !!p)));
+      const products = groupProducts(mapped.filter((p): p is NonNullable<typeof p> => !!p));
       if (products.length === 0) throw new Error('WooCommerce returned no mappable products');
-      const catalog: Catalog = { version: 1, freeShippingThreshold: this.opts.freeShippingThreshold, products };
+      const catalog: Catalog = { version: 1, products };
       await this.store.write(CACHE_KEY, catalog);
       return catalog;
     } catch (e) {

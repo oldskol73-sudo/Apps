@@ -1,10 +1,11 @@
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import { catalogRepository, config } from '@/data';
+import { catalogRepository } from '@/data';
 import { Catalog } from '@/data/repository';
+import { ShippingZone } from '@/domain/shipping';
 import { Product } from '@/domain/types';
 
 type Status = 'loading' | 'ready' | 'error';
-interface Api { status: Status; products: Product[]; byId(id: string): Product | undefined; threshold: number; reload(): void }
+interface Api { status: Status; products: Product[]; byId(id: string): Product | undefined; zones: ShippingZone[] | undefined; reload(): void }
 const Ctx = createContext<Api | null>(null);
 
 export function CatalogProvider({ children }: { children: React.ReactNode }) {
@@ -18,7 +19,7 @@ export function CatalogProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<Api>(() => {
     const products = catalog?.products ?? [];
     const map = new Map(products.map((p) => [p.id, p]));
-    return { status, products, byId: (id) => map.get(id), threshold: catalog?.freeShippingThreshold ?? config.freeShippingThreshold, reload: load };
+    return { status, products, byId: (id) => map.get(id), zones: catalog?.shipping?.zones, reload: load };
   }, [status, catalog, load]);
   return <Ctx.Provider value={api}>{children}</Ctx.Provider>;
 }

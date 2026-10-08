@@ -1,4 +1,4 @@
-import { fillPairings, groupProducts, inferCharacter, mapWooProduct, splitName, stripHtml, wooPrice, WooProduct } from '../src/data/wooMapping';
+import { groupProducts, inferCharacter, mapWooProduct, splitName, stripHtml, wooPrice, WooProduct } from '../src/data/wooMapping';
 import { WooCommerceCatalogRepository } from '../src/data/wooCatalogRepository';
 
 const levi: WooProduct = {
@@ -25,9 +25,11 @@ describe('WooCommerce mapping (twelve12scents.com shape)', () => {
     expect(p.variants).toEqual([{ id: '87', label: 'Standard', price: 5, inStock: true }]);
     expect(p.details).toEqual([]);
   });
-  it('treats tribes missing from the brand table (e.g. Ephraim) as tribe products with a brass swatch and no stone', () => {
-    const p = mapWooProduct({ ...levi, id: 85, name: 'Ephraim' }, [])!;
-    expect(p).toMatchObject({ tribe: true, stone: undefined, colorHex: '#C99A3F' });
+  it('gives Ephraim a black-and-white banded swatch and Manasseh dark brown, with no stone', () => {
+    const e = mapWooProduct({ ...levi, id: 85, name: 'Ephraim' }, [])!;
+    expect(e).toMatchObject({ tribe: true, stone: undefined, colorHex: '#1A1715', colorHex2: '#F4EEE5' });
+    const m = mapWooProduct({ ...levi, id: 88, name: 'Manasseh' }, [])!;
+    expect(m).toMatchObject({ tribe: true, stone: undefined, colorHex: '#4A2C1A', colorHex2: undefined });
   });
   it('treats non-tribe fresheners as sprays without a stone', () => {
     const p = mapWooProduct({ ...levi, id: 93, name: 'Black Ice', categories: [{ slug: 'room-car-fresheners' }] }, [])!;
@@ -65,10 +67,6 @@ describe('grouping + pairings', () => {
   it('does not merge differently-named standard products', () => {
     expect(groupProducts([mapWooProduct(levi, [])!, mapWooProduct({ ...levi, id: 84, name: 'Gad' }, [])!])).toHaveLength(2);
   });
-  it('suggests in-stock companions by category when the store has no cross-sells', () => {
-    const g = fillPairings(groupProducts(mapped));
-    expect(g.find((p) => p.name === '11″ Incense')!.pairings).toEqual([g.find((p) => p.category === 'charcoal')!.id]);
-  });
 });
 
 describe('WooCommerceCatalogRepository', () => {
@@ -78,22 +76,22 @@ describe('WooCommerceCatalogRepository', () => {
     const store = mem();
     let online = true;
     const fetchImpl = (async (url: string) => { if (!online) throw new Error('offline'); return ok(url.includes('type=variation') ? [] : [levi]); }) as unknown as typeof fetch;
-    const repo = new WooCommerceCatalogRepository('https://shop.test/', store, { freeShippingThreshold: 75, fetchImpl });
+    const repo = new WooCommerceCatalogRepository('https://shop.test/', store, { fetchImpl });
     const c1 = await repo.getCatalog();
-    expect(c1.products).toHaveLength(1); expect(c1.freeShippingThreshold).toBe(75);
+    expect(c1.products).toHaveLength(1);
     online = false;
     expect((await repo.getCatalog()).products[0].id).toBe('woo-87');
   });
   it('throws when offline with no cache (UI shows its error state)', async () => {
     const fetchImpl = (async () => { throw new Error('offline'); }) as unknown as typeof fetch;
-    await expect(new WooCommerceCatalogRepository('https://shop.test', mem(), { freeShippingThreshold: 60, fetchImpl }).getCatalog()).rejects.toThrow();
+    await expect(new WooCommerceCatalogRepository('https://shop.test', mem(), { fetchImpl }).getCatalog()).rejects.toThrow();
   });
 });
 
 describe('real twelve12scents.com catalog (fixture exported from the live store)', () => {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const raw = require('./fixtures/twelve12scents.json') as WooProduct[];
-  const catalog = fillPairings(groupProducts(raw.map((p) => mapWooProduct(p, [])).filter((p): p is NonNullable<typeof p> => !!p)));
+  const catalog = groupProducts(raw.map((p) => mapWooProduct(p, [])).filter((p): p is NonNullable<typeof p> => !!p));
   const by = (n: string) => catalog.find((p) => p.name === n)!;
 
   it('maps all 43 listings and groups the size listings into 37 products', () => { expect(raw).toHaveLength(43); expect(catalog).toHaveLength(37); });
@@ -102,17 +100,18 @@ describe('real twelve12scents.com catalog (fixture exported from the live store)
     expect(tribes).toEqual(['Asher', 'Benjamin', 'Ephraim', 'Gad', 'Issachar', 'Judah', 'Levi', 'Manasseh', 'Naphtali', 'Reuben', 'Simeon', 'Zebulun']);
   });
   it('gives stones to tribes in the brand table only', () => { expect(by('Judah').stone).toBe('Emerald'); expect(by('Ephraim').stone).toBeUndefined(); });
+  it('swatches: Ephraim banded black/white, Manasseh dark brown', () => { expect(by('Ephraim')).toMatchObject({ colorHex: '#1A1715', colorHex2: '#F4EEE5' }); expect(by('Manasseh').colorHex).toBe('#4A2C1A'); });
+  it('never offers Subscribe & save from the store (no tag)', () => { expect(catalog.some((p) => p.subscribable)).toBe(false); });
   it('turns 11″/19″ incense and frankincense sizes into variants', () => {
     expect(by('11" Incense').variants.map((v) => [v.label, v.price])).toEqual([['100 Sticks', 6], ['5 Pack Bundle', 25]]);
     expect(by('Rock Frankincense').variants.map((v) => v.price)).toEqual([5, 10, 20]);
     expect(by('19" Incense').variants.every((v) => v.inStock === false)).toBe(true);
   });
-  it('every product has a price, a photo, a description and a pairing', () => {
+  it('every product has a price and a photo', () => {
     for (const p of catalog) {
       expect(Math.min(...p.variants.map((v) => v.price))).toBeGreaterThan(0);
       expect(p.images.length).toBeGreaterThan(0);
     }
-    expect(catalog.filter((p) => p.pairings.length === 0).map((p) => p.name)).toEqual([]);
   });
   it('decodes entities in names/taglines', () => { expect(by('Frank & Myrrh Burning Oil').tagline).toBe('Frankincense & myrrh blend, 2 oz.'); });
 });

@@ -86,6 +86,6 @@ const others = [
     [v('charcoal-quick-light', '10 discs', 8), v('charcoal-quick-light', '30 discs', 20)], true, ['rock-frankincense']),
 ];
 
-const catalog = { version: 1, freeShippingThreshold: 60, products: [...sprays, ...others] };
+const catalog = { version: 1, products: [...sprays, ...others] };
 fs.writeFileSync(__dirname + '/../src/data/catalog.json', JSON.stringify(catalog, null, 2));
 console.log('products:', catalog.products.length);

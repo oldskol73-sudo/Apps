@@ -1,8 +1,6 @@
-import { CartItem, Category, Character, Mood, Plan, Product, ShippingMethod } from './types';
+import { CartItem, Category, Character, Mood, Plan, Product } from './types';
 
 export const SUBSCRIPTION_DISCOUNT = 0.1;
-export const EXPRESS_SHIPPING = 14;
-export const STANDARD_SHIPPING = 6;
 export const POINTS_REDEEM_COST = 1000;
 export const POINTS_REDEEM_VALUE = 10;
 export const REWARD_STEP_POINTS = 2000;
@@ -21,13 +19,6 @@ export function subtotal(items: { price: number; qty: number; plan: Plan }[]): n
 }
 export function cartCount(items: CartItem[]): number {
   return items.reduce((s, i) => s + i.qty, 0);
-}
-export function freeShippingRemaining(sub: number, threshold: number): number {
-  return Math.max(0, round2(threshold - sub));
-}
-export function shippingCost(method: ShippingMethod, sub: number, threshold: number): number {
-  if (method === 'express') return EXPRESS_SHIPPING;
-  return sub >= threshold ? 0 : STANDARD_SHIPPING;
 }
 /** Points can be redeemed only in whole blocks and never beyond the balance/subtotal. */
 export function pointsDiscount(usePoints: boolean, balance: number, sub: number): number {

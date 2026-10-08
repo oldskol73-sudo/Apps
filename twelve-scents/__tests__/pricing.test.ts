@@ -1,5 +1,5 @@
 import {
-  unitPrice, lineTotal, subtotal, cartCount, freeShippingRemaining, shippingCost, pointsDiscount, orderTotal,
+  unitPrice, lineTotal, subtotal, cartCount, pointsDiscount, orderTotal,
   pointsEarned, tierFor, rewardProgress, rankForFinder, filterProducts, MOOD_CHARACTERS,
 } from '../src/domain/pricing';
 import catalog from '../src/data/catalog.json';
@@ -26,15 +26,6 @@ describe('subscription discount', () => {
   it('applies to line totals', () => { expect(lineTotal(35, 2, 'subscription')).toBe(63); });
 });
 
-describe('shipping threshold', () => {
-  it('reports the remaining amount', () => { expect(freeShippingRemaining(45, 60)).toBe(15); });
-  it('clamps at zero once reached', () => { expect(freeShippingRemaining(75, 60)).toBe(0); });
-  it('charges $6 standard under the threshold', () => { expect(shippingCost('standard', 59.99, 60)).toBe(6); });
-  it('is free at exactly the threshold', () => { expect(shippingCost('standard', 60, 60)).toBe(0); });
-  it('express is always $14', () => { expect(shippingCost('express', 500, 60)).toBe(14); });
-  it('honours a configurable threshold', () => { expect(shippingCost('standard', 80, 100)).toBe(6); });
-});
-
 describe('points', () => {
   it('redeems 1,000 points for $10 off', () => { expect(pointsDiscount(true, 1000, 88)).toBe(10); });
   it('refuses redemption under 1,000 points', () => { expect(pointsDiscount(true, 999, 88)).toBe(0); });
@@ -42,7 +33,7 @@ describe('points', () => {
   it('never discounts below the subtotal', () => { expect(pointsDiscount(true, 5000, 6)).toBe(6); });
   it('earns 1 pt per whole dollar, excluding shipping', () => { expect(pointsEarned(88.5, 0)).toBe(88); });
   it('earns on the discounted amount', () => { expect(pointsEarned(88, 10)).toBe(78); });
-  it('totals correctly', () => { expect(orderTotal(88, 0, 10)).toBe(78); expect(orderTotal(40, 6, 0)).toBe(46); });
+  it('totals correctly', () => { expect(orderTotal(88, 12.99, 10)).toBe(90.99); expect(orderTotal(40, 0, 0)).toBe(40); });
   it('derives tiers', () => { expect(tierFor(0)).toBe('Bronze'); expect(tierFor(2000)).toBe('Silver'); expect(tierFor(6000)).toBe('Gold'); });
   it('tracks the 12-stone progress toward a $20 reward', () => {
     expect(rewardProgress(1000)).toEqual({ stonesLit: 6, pointsToNext: 1000, rewardsAvailable: 0 });

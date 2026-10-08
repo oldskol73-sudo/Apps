@@ -10,6 +10,8 @@ export interface Product {
   stone?: string;
   numeral?: string;
   colorHex: string;
+  /** Second colour for banded stones (e.g. Ephraim: black and white). */
+  colorHex2?: string;
   /** Part of the Twelve Tribes collection (drives the stone grid). Undefined is treated as true for stone-bearing sprays. */
   tribe?: boolean;
   character: Character;
@@ -32,4 +34,4 @@ export interface User {
   name: string; address: Address; points: number; tier: string; favourites: string[];
 }
 export type Mood = 'Clean' | 'Earthy' | 'Warm' | 'Fresh' | 'Rich';
-export type ShippingMethod = 'standard' | 'express';
+export type ShippingMethod = 'flat_rate' | 'local_pickup';
