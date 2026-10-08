@@ -25,11 +25,11 @@ describe('WooCommerce mapping (twelve12scents.com shape)', () => {
     expect(p.variants).toEqual([{ id: '87', label: 'Standard', price: 5, inStock: true }]);
     expect(p.details).toEqual([]);
   });
-  it('gives Ephraim a black-and-white banded swatch and Manasseh dark brown, with no stone', () => {
+  it('gives Ephraim (Onyx) a black-and-white banded swatch and Manasseh (Beryl) dark brown', () => {
     const e = mapWooProduct({ ...levi, id: 85, name: 'Ephraim' }, [])!;
-    expect(e).toMatchObject({ tribe: true, stone: undefined, colorHex: '#1A1715', colorHex2: '#F4EEE5' });
+    expect(e).toMatchObject({ tribe: true, stone: 'Onyx', numeral: undefined, colorHex: '#1A1715', colorHex2: '#F4EEE5' });
     const m = mapWooProduct({ ...levi, id: 88, name: 'Manasseh' }, [])!;
-    expect(m).toMatchObject({ tribe: true, stone: undefined, colorHex: '#4A2C1A', colorHex2: undefined });
+    expect(m).toMatchObject({ tribe: true, stone: 'Beryl', numeral: undefined, colorHex: '#4A2C1A', colorHex2: undefined });
   });
   it('treats non-tribe fresheners as sprays without a stone', () => {
     const p = mapWooProduct({ ...levi, id: 93, name: 'Black Ice', categories: [{ slug: 'room-car-fresheners' }] }, [])!;
@@ -99,7 +99,7 @@ describe('real twelve12scents.com catalog (fixture exported from the live store)
     const tribes = catalog.filter((p) => p.tribe).map((p) => p.name).sort();
     expect(tribes).toEqual(['Asher', 'Benjamin', 'Ephraim', 'Gad', 'Issachar', 'Judah', 'Levi', 'Manasseh', 'Naphtali', 'Reuben', 'Simeon', 'Zebulun']);
   });
-  it('gives stones to tribes in the brand table only', () => { expect(by('Judah').stone).toBe('Emerald'); expect(by('Ephraim').stone).toBeUndefined(); });
+  it('gives stones to the tribes', () => { expect(by('Judah').stone).toBe('Emerald'); expect(by('Ephraim').stone).toBe('Onyx'); expect(by('Manasseh').stone).toBe('Beryl'); });
   it('swatches: Ephraim banded black/white, Manasseh dark brown', () => { expect(by('Ephraim')).toMatchObject({ colorHex: '#1A1715', colorHex2: '#F4EEE5' }); expect(by('Manasseh').colorHex).toBe('#4A2C1A'); });
   it('never offers Subscribe & save from the store (no tag)', () => { expect(catalog.some((p) => p.subscribable)).toBe(false); });
   it('turns 11″/19″ incense and frankincense sizes into variants', () => {

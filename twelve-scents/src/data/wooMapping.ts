@@ -37,7 +37,7 @@ export const DEFAULT_MAPPING: WooMapping = {
   attr: { stone: 'stone', numeral: 'numeral', character: 'character', colour: 'colour', hidden: ['stone', 'numeral', 'character', 'colour', 'color'] },
 };
 
-/** Breastplate stone, numeral and colour per tribe name (brand spec). Tribes without a stone (Ephraim, Manasseh) only carry a swatch colour. */
+/** Breastplate stone, numeral and colour per tribe name (brand spec). Ephraim and Manasseh have a stone but no numeral. */
 export const TRIBES: Record<string, { stone?: string; numeral?: string; colour: string; band?: string }> = {
   reuben: { stone: 'Sardius', numeral: 'I', colour: '#8E2B25' }, simeon: { stone: 'Topaz', numeral: 'II', colour: '#B0822C' },
   levi: { stone: 'Carbuncle', numeral: 'III', colour: '#6E1F35' }, judah: { stone: 'Emerald', numeral: 'IV', colour: '#2F6E4A' },
@@ -46,7 +46,7 @@ export const TRIBES: Record<string, { stone?: string; numeral?: string; colour: 
   gad: { stone: 'Amethyst', numeral: 'IX', colour: '#5B3A7A' }, asher: { stone: 'Beryl', numeral: 'X', colour: '#8A6A2F' },
   joseph: { stone: 'Onyx', numeral: 'XI', colour: '#3A3430' }, benjamin: { stone: 'Jasper', numeral: 'XII', colour: '#8C3D2E' },
   // Not on the breastplate list: Joseph's sons. Swatches per the brand: black-and-white banded, and dark brown.
-  ephraim: { colour: '#1A1715', band: '#F4EEE5' }, manasseh: { colour: '#4A2C1A' },
+  ephraim: { stone: 'Onyx', colour: '#1A1715', band: '#F4EEE5' }, manasseh: { stone: 'Beryl', colour: '#4A2C1A' },
 };
 const BRASS = '#C99A3F';
 const CHARACTERS: Character[] = ['Warm', 'Fresh', 'Grounding', 'Bright'];
