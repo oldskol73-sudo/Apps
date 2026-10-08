@@ -17,6 +17,7 @@ Copy `.env.example` to `.env` (all `EXPO_PUBLIC_*`, read in `src/data/index.ts`)
 
 | Key | Purpose |
 |---|---|
+| `EXPO_PUBLIC_WOO_URL` | WooCommerce site root, e.g. `https://yourstore.com`. Enables the live catalog via the public Store API (no keys). Takes priority over the options below |
 | `EXPO_PUBLIC_API_BASE_URL` | If set, catalog is fetched from `{url}/catalog.json` (falls back to the bundled copy when offline) |
 | `EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key for the Payment Sheet |
 | `EXPO_PUBLIC_FREE_SHIPPING_THRESHOLD` | Free-shipping threshold, default `60` (the catalog JSON's `freeShippingThreshold` wins when present) |
@@ -24,10 +25,21 @@ Copy `.env.example` to `.env` (all `EXPO_PUBLIC_*`, read in `src/data/index.ts`)
 ## Architecture
 - `src/theme` – every colour/type/shape token. Views import tokens; no hard-coded colours.
 - `src/domain` – pure logic (`pricing.ts`: cart, shipping, points, tiers, finder ranking, search/sort). Unit-tested in `__tests__`.
-- `src/data` – `CatalogRepository` interface; `MockCatalogRepository` (bundled `catalog.json`), `RemoteCatalogRepository` (REST). Add a `ShopifyCatalogRepository` (Storefront API) behind the same interface and select it in `src/data/index.ts`.
+- `src/data` – `CatalogRepository` interface; `MockCatalogRepository` (bundled `catalog.json`), `RemoteCatalogRepository` (REST). `WooCommerceCatalogRepository` reads `/wp-json/wc/store/v1/products` (+ variations), caches the last good catalog for offline use, and shows the error state rather than mock prices if there is neither network nor cache.
 - `src/services` – `analytics` (view_item, add_to_cart, begin_checkout, purchase, finder_complete, subscribe), `payments`, `auth`, `notifications`. These are **interfaces with mock implementations** (see below).
 - `src/state` – store (cart, favourites, user, subscriptions, orders; persisted to AsyncStorage) and catalog provider (loading/ready/error).
 - `app/` – routes: `(tabs)` Shop · Browse · Finder · Bag · Account; pushed `product/[id]`, `checkout`, `confirmed`. Search is the header magnifier → Browse with the search field open.
+
+### WooCommerce setup
+The mapping lives in `src/data/wooMapping.ts` (`DEFAULT_MAPPING`). In WooCommerce:
+- **Categories** (by slug): `room-sprays`, `incense`, `rock-incense`, `burning-oils`, `brass-censers`, `charcoal`. Products in other categories are skipped. Adjust `categorySlugs` if your slugs differ.
+- **Global/custom attributes** (non-variation, visible): `Stone`, `Numeral`, `Character` (Warm/Fresh/Grounding/Bright), optional `Colour` (hex, e.g. `#6E1F35`; otherwise derived from the stone). Other non-variation attributes (e.g. Top/Heart/Base) become the three detail columns.
+- **Variable products**: variation attributes form the Type dropdown. Simple products get a single variant.
+- **Subscribe & save**: tag products `subscribe`.
+- **Pairings** come from cross-sells/up-sells/related products. Verify your Woo version exposes these on the Store API; if not, the section is simply hidden.
+- Description -> product description; short description (first line) -> italic tagline.
+
+Not yet done for Woo: placing orders (checkout is still the mock), accounts/points/subscriptions on the server. Those need either the Store API cart + checkout endpoints with Stripe (WooCommerce Stripe Gateway), or custom endpoints, plus a subscriptions plugin (WooCommerce Subscriptions or similar) and a points plugin. Consumer keys/secrets must stay on a server, never in the app.
 
 ### Catalog data
 Only the 12 tribe sprays (names, stones, colours, $35) are fixed by spec. Everything else is placeholder. Edit `scripts/generate-catalog.js` and run `npm run catalog`, or host the same JSON shape at `API_BASE_URL/catalog.json` to change content without a release. Image URLs in the catalog point at a placeholder CDN; until real photos exist, `Photo` renders a generated warm "bokeh" plate tinted with the stone colour.
