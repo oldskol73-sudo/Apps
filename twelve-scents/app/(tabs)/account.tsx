@@ -8,7 +8,7 @@ import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { StoneSwatch } from '@/components/StoneSwatch';
 import { Kicker, OutlineButton } from '@/components/ui';
 import { features } from '@/data';
-import { money, REWARD_STEP_POINTS, REWARD_STEP_VALUE, rewardProgress } from '@/domain/pricing';
+import { isTribe, money, REWARD_STEP_POINTS, REWARD_STEP_VALUE, rewardProgress } from '@/domain/pricing';
 import { authService, AuthSession } from '@/services/auth';
 import { useCatalog } from '@/state/catalog';
 import { nextDeliveryDate, useStore } from '@/state/store';
@@ -25,7 +25,7 @@ export default function AccountScreen() {
   const [authError, setAuthError] = useState<string | null>(null);
   const { user, subscriptions, orders } = state;
   const prog = rewardProgress(user.points);
-  const stones = products.filter((p) => p.category === 'spray' && p.tribe !== false).slice(0, 12);
+  const stones = products.filter(isTribe).slice(0, 12);
 
   const signIn = async (provider: AuthSession['provider']) => {
     try { setAuthError(null); setSession(await authService.signIn(provider)); } catch { setAuthError('Sign-in failed. Please try again.'); }
@@ -77,7 +77,7 @@ export default function AccountScreen() {
         {features.subscriptions && (<>
         <View style={s.head}><Kicker>Subscriptions</Kicker><Text style={s.h2} accessibilityRole="header">Your deliveries</Text></View>
         <View style={[s.mx, { gap: 10 }]}>
-          {subscriptions.length === 0 && <View style={s.card}><EmptyView title="No subscriptions" body="Subscribe & save 10% on any spray." action="Browse sprays" onAction={() => router.navigate({ pathname: '/browse', params: { cat: 'spray' } })} /></View>}
+          {subscriptions.length === 0 && <View style={s.card}><EmptyView title="No subscriptions" body="Subscribe & save 10% on any spray." action="Browse sprays" onAction={() => router.navigate({ pathname: '/browse', params: { cat: 'tribes' } })} /></View>}
           {subscriptions.map((sub) => {
             const p = byId(sub.productId); if (!p) return null;
             const v = p.variants.find((x) => x.id === sub.variantId);

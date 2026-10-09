@@ -21,7 +21,7 @@ const initial: State = {
   subscriptions: [{ id: 'sub-1', productId: 'spray-judah', variantId: 'spray-judah-100', intervalWeeks: 6, nextDate: daysFromNow(12), skipped: false }],
   orders: [{
     id: 'TS-104218', date: daysFromNow(-30), total: 48.5, pointsEarned: 42,
-    items: [{ productId: 'incense-frankincense-myrrh', variantId: 'incense-frankincense-myrrh-handrolledincense', qty: 1, plan: 'once', unitPrice: 18 },
+    items: [{ productId: 'incense-frankincense-myrrh', variantId: 'incense-frankincense-myrrh-handbundledincense', qty: 1, plan: 'once', unitPrice: 18 },
       { productId: 'spray-levi', variantId: 'spray-levi-100', qty: 1, plan: 'once', unitPrice: 35 }],
   }],
 };
@@ -34,6 +34,7 @@ type Action =
   | { type: 'address'; address: Address }
   | { type: 'order'; order: Order; subs: Subscription[]; spentPoints: number }
   | { type: 'skip'; id: string; skipped: boolean }
+  | { type: 'clearCart' }
   | { type: 'toast'; message: string | null };
 
 const same = (a: CartItem, b: { productId: string; variantId: string; plan: Plan }) =>
@@ -64,6 +65,8 @@ function reducer(s: State, a: Action): State {
     }
     case 'skip':
       return { ...s, subscriptions: s.subscriptions.map((x) => (x.id === a.id ? { ...x, skipped: a.skipped } : x)) };
+    case 'clearCart':
+      return { ...s, cart: [] };
     case 'toast':
       return { ...s, toast: a.message ? { id: Date.now(), message: a.message } : null };
   }
@@ -75,6 +78,8 @@ interface Api {
   state: State;
   addToCart(product: Product, variantId: string, qty?: number, plan?: Plan): void;
   setQty(item: CartItem, qty: number): void;
+  /** Empties the bag, e.g. after the order was placed on the website. */
+  clearCart(): void;
   toggleFavourite(id: string): void;
   setAddress(a: Address): void;
   placeOrder(args: PlaceOrderArgs): Order;
@@ -107,6 +112,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
   const api = useMemo<Api>(() => ({
     state, addToCart,
     setQty: (item, qty) => dispatch({ type: 'qty', productId: item.productId, variantId: item.variantId, plan: item.plan, qty }),
+    clearCart: () => dispatch({ type: 'clearCart' }),
     toggleFavourite: (id) => dispatch({ type: 'fav', id }),
     setAddress: (address) => dispatch({ type: 'address', address }),
     setSkipped: (id, skipped) => dispatch({ type: 'skip', id, skipped }),

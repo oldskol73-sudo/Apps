@@ -1,6 +1,6 @@
 import {
   unitPrice, lineTotal, subtotal, cartCount, pointsDiscount, orderTotal,
-  pointsEarned, tierFor, rewardProgress, rankForFinder, filterProducts, MOOD_CHARACTERS,
+  pointsEarned, tierFor, rewardProgress, rankForFinder, filterProducts, shelfOf, MOOD_CHARACTERS,
 } from '../src/domain/pricing';
 import catalog from '../src/data/catalog.json';
 import { Product } from '../src/domain/types';
@@ -68,7 +68,7 @@ describe('finder ranking', () => {
 
 describe('catalog + browse filtering', () => {
   it('seeds 12 tribe sprays at $35', () => {
-    const s = products.filter((p) => p.category === 'spray');
+    const s = products.filter((p) => p.category === 'spray' && p.tribe);
     expect(s).toHaveLength(12);
     expect(s.every((p) => p.variants[0].price === 35 && p.subscribable)).toBe(true);
   });
@@ -76,6 +76,22 @@ describe('catalog + browse filtering', () => {
   it('filters by category and sorts A–Z', () => {
     const n = filterProducts(products, 'spray', '', 'az').map((p) => p.name);
     expect(n).toEqual([...n].sort((a, b) => a.localeCompare(b)));
+  });
+  it('splits the 12 Tribes Collection out of Room Sprays', () => {
+    const tribes = filterProducts(products, 'tribes', '', 'featured');
+    const sprays = filterProducts(products, 'spray', '', 'featured');
+    expect(tribes).toHaveLength(12);
+    expect(tribes.every((p) => p.category === 'spray' && p.tribe)).toBe(true);
+    expect(sprays.length).toBeGreaterThan(0);
+    expect(sprays.every((p) => p.category === 'spray' && !p.tribe)).toBe(true);
+  });
+  it('treats a stone-bearing spray without a tribe flag as a tribe', () => {
+    const judah = { ...products.find((p) => p.name === 'Judah')!, tribe: undefined };
+    expect(shelfOf(judah)).toBe('tribes');
+    expect(shelfOf({ ...judah, stone: undefined })).toBe('spray');
+  });
+  it('finds the collection by name in search', () => {
+    expect(filterProducts(products, 'all', '12 tribes', 'featured')).toHaveLength(12);
   });
   it('sorts by price ascending', () => {
     const p = filterProducts(products, 'rock', '', 'price').map((x) => Math.min(...x.variants.map((v) => v.price)));

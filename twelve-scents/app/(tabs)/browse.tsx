@@ -7,29 +7,30 @@ import { ProductCard } from '@/components/ProductViews';
 import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { Chip } from '@/components/ui';
-import { CATEGORY_LABELS, filterProducts, SortKey, SPRAY_CLAIM } from '@/domain/pricing';
-import { Category } from '@/domain/types';
+import { filterProducts, isShelf, Shelf, SHELF_LABELS, shelfOf, SHELVES, SortKey, SPRAY_CLAIM } from '@/domain/pricing';
 import { useCatalog } from '@/state/catalog';
 import { colors, fonts, radius, space, type } from '@/theme';
 
-const ORDER: Category[] = ['spray', 'incense', 'rock', 'oil', 'censer', 'charcoal'];
-const CARD_CATS: Category[] = ['spray', 'incense', 'rock', 'oil', 'censer'];
+const CARD_SHELVES: Shelf[] = ['tribes', 'spray', 'incense', 'rock', 'oil', 'censer'];
+const isSprayShelf = (c: Shelf) => c === 'tribes' || c === 'spray';
 const SORTS: { key: SortKey; label: string }[] = [{ key: 'featured', label: 'Featured' }, { key: 'price', label: 'Price' }, { key: 'az', label: 'A–Z' }];
 
 export default function BrowseScreen() {
   const params = useLocalSearchParams<{ cat?: string; search?: string }>();
   const { status, products, reload } = useCatalog();
-  const [cat, setCat] = useState<Category | 'all'>('all');
+  const [cat, setCat] = useState<Shelf | 'all'>('all');
   const [query, setQuery] = useState('');
   const [sort, setSort] = useState<SortKey>('featured');
   const [searchOpen, setSearchOpen] = useState(false);
   const input = useRef<TextInput>(null);
 
-  useEffect(() => { if (params.cat && ORDER.includes(params.cat as Category)) setCat(params.cat as Category); }, [params.cat]);
+  useEffect(() => { if (params.cat && isShelf(params.cat)) setCat(params.cat); }, [params.cat]);
   useEffect(() => { if (params.search) { setSearchOpen(true); setTimeout(() => input.current?.focus(), 150); } }, [params.search]);
 
   const results = useMemo(() => filterProducts(products, cat, query, sort), [products, cat, query, sort]);
   const showCategoryCards = cat === 'all' && !query.trim();
+  // Hide shelves the catalog has nothing for (e.g. no non-tribe sprays), but keep the selected one.
+  const shelves = useMemo(() => SHELVES.filter((c) => c === cat || !products.length || products.some((p) => shelfOf(p) === c)), [products, cat]);
 
   return (
     <Screen>
@@ -44,23 +45,23 @@ export default function BrowseScreen() {
       )}
       <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.chips}>
         <Chip label="All" active={cat === 'all'} onPress={() => setCat('all')} />
-        {ORDER.map((c) => <Chip key={c} label={CATEGORY_LABELS[c]} active={cat === c} onPress={() => setCat(c)} />)}
+        {shelves.map((c) => <Chip key={c} label={SHELF_LABELS[c]} active={cat === c} onPress={() => setCat(c)} />)}
       </ScrollView>
 
       {status === 'loading' && <LoadingView label="Loading products" />}
       {status === 'error' && <ErrorView message="We couldn’t reach the catalog." onRetry={reload} />}
       {status === 'ready' && showCategoryCards && (
         <View style={{ paddingHorizontal: space.gutter, gap: 12, marginTop: 8 }}>
-          {CARD_CATS.map((c) => {
-            const list = products.filter((p) => p.category === c);
+          {CARD_SHELVES.map((c) => {
+            const list = products.filter((p) => shelfOf(p) === c);
             if (!list.length) return null;
-            const sub = c === 'spray' ? SPRAY_CLAIM : `${list.length} ${list.length === 1 ? 'product' : 'products'}`;
+            const sub = isSprayShelf(c) ? SPRAY_CLAIM : `${list.length} ${list.length === 1 ? 'product' : 'products'}`;
             return (
-              <Pressable key={c} accessibilityRole="button" accessibilityLabel={`${CATEGORY_LABELS[c]}, ${sub}`} onPress={() => setCat(c)}>
-                <Photo uri={list[0].images[0]} tone={list[0].colorHex} seed={ORDER.indexOf(c) + 2} scrim="left" style={s.catCard}>
+              <Pressable key={c} accessibilityRole="button" accessibilityLabel={`${SHELF_LABELS[c]}, ${sub}`} onPress={() => setCat(c)}>
+                <Photo uri={list[0].images[0]} tone={list[0].colorHex} seed={SHELVES.indexOf(c) + 1} scrim="left" style={s.catCard}>
                   <View style={s.catText}>
-                    <Text style={s.catTitle}>{CATEGORY_LABELS[c]}</Text>
-                    {c === 'spray' ? <Text style={[type.small, { color: colors.onDark }]}>{sub}</Text> : null}
+                    <Text style={s.catTitle}>{SHELF_LABELS[c]}</Text>
+                    {isSprayShelf(c) ? <Text style={[type.small, { color: colors.onDark }]}>{sub}</Text> : null}
                   </View>
                   <View style={s.catArrow}><Icon name="arrow" size={18} color={colors.onDark} /></View>
                 </Photo>

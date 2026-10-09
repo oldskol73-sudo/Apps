@@ -27,6 +27,7 @@ export default function RootLayout() {
             <Stack.Screen name="product/[id]" />
             <Stack.Screen name="checkout" />
             <Stack.Screen name="confirmed" options={{ gestureEnabled: false }} />
+            <Stack.Screen name="order-complete" options={{ animation: 'none', gestureEnabled: false }} />
           </Stack>
           <Toast />
         </CatalogProvider>

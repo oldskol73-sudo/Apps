@@ -1,5 +1,6 @@
 import { groupProducts, inferCharacter, mapWooProduct, splitName, stripHtml, wooPrice, WooProduct } from '../src/data/wooMapping';
 import { WooCommerceCatalogRepository } from '../src/data/wooCatalogRepository';
+import { filterProducts } from '../src/domain/pricing';
 
 const levi: WooProduct = {
   id: 87, name: 'Levi', type: 'simple', is_in_stock: true, short_description: 'Clean, elevated fragrance. 3-day.',
@@ -25,9 +26,9 @@ describe('WooCommerce mapping (twelve12scents.com shape)', () => {
     expect(p.variants).toEqual([{ id: '87', label: 'Standard', price: 5, inStock: true }]);
     expect(p.details).toEqual([]);
   });
-  it('gives Ephraim (Onyx) a black-and-white banded swatch and Manasseh (Beryl) dark brown', () => {
+  it('gives Ephraim (Onyx) a solid black swatch and Manasseh (Beryl) dark brown', () => {
     const e = mapWooProduct({ ...levi, id: 85, name: 'Ephraim' }, [])!;
-    expect(e).toMatchObject({ tribe: true, stone: 'Onyx', numeral: undefined, colorHex: '#1A1715', colorHex2: '#F4EEE5' });
+    expect(e).toMatchObject({ tribe: true, stone: 'Onyx', numeral: undefined, colorHex: '#1A1715', colorHex2: undefined });
     const m = mapWooProduct({ ...levi, id: 88, name: 'Manasseh' }, [])!;
     expect(m).toMatchObject({ tribe: true, stone: 'Beryl', numeral: undefined, colorHex: '#4A2C1A', colorHex2: undefined });
   });
@@ -99,8 +100,20 @@ describe('real twelve12scents.com catalog (fixture exported from the live store)
     const tribes = catalog.filter((p) => p.tribe).map((p) => p.name).sort();
     expect(tribes).toEqual(['Asher', 'Benjamin', 'Ephraim', 'Gad', 'Issachar', 'Judah', 'Levi', 'Manasseh', 'Naphtali', 'Reuben', 'Simeon', 'Zebulun']);
   });
-  it('gives stones to the tribes', () => { expect(by('Judah').stone).toBe('Emerald'); expect(by('Ephraim').stone).toBe('Onyx'); expect(by('Manasseh').stone).toBe('Beryl'); });
-  it('swatches: Ephraim banded black/white, Manasseh dark brown', () => { expect(by('Ephraim')).toMatchObject({ colorHex: '#1A1715', colorHex2: '#F4EEE5' }); expect(by('Manasseh').colorHex).toBe('#4A2C1A'); });
+  it('shelves Asher (in both store categories) under the 12 Tribes Collection, not Room Sprays', () => {
+    const shelf = (k: 'tribes' | 'spray') => filterProducts(catalog, k, '', 'az').map((p) => p.name);
+    expect(shelf('tribes')).toHaveLength(12);
+    expect(shelf('tribes')).toContain('Asher');
+    expect(shelf('spray')).toEqual(['Black Ice', 'Lavender', 'Linen Cloth', 'Loco Coco Coco', 'Love In Black', 'Luscious Coconut', 'Mahogany Teakwood', 'Sweet Whiskey']);
+  });
+  it('decodes WordPress entities in names (no raw &#038; in the app)', () => {
+    expect(stripHtml('Frank &#038; Myrrh Burning Oil')).toBe('Frank & Myrrh Burning Oil');
+    expect(stripHtml('Tabanakin&#8217; &#038; Myrrh Oil')).toBe('Tabanakin’ & Myrrh Oil');
+    expect(stripHtml('8&#8243; Brass &amp; &#x2014; &bogus;')).toBe('8″ Brass & — &bogus;');
+    expect(catalog.some((p) => /&#?\w+;/.test(p.name) || p.variants.some((v) => /&#?\w+;/.test(v.label)))).toBe(false);
+  });
+  it('gives stones to the tribes', () => { expect(by('Judah').stone).toBe('Emerald'); expect(by('Ephraim').stone).toBe('Onyx'); expect(by('Manasseh').stone).toBe('Beryl'); expect(by('Asher').stone).toBe('Agate'); expect(by('Naphtali')).toMatchObject({ stone: 'Ligure', colorHex: '#8B1E4B' }); });
+  it('swatches: Ephraim solid black, Manasseh dark brown', () => { expect(by('Ephraim')).toMatchObject({ colorHex: '#1A1715', colorHex2: undefined }); expect(by('Manasseh').colorHex).toBe('#4A2C1A'); });
   it('never offers Subscribe & save from the store (no tag)', () => { expect(catalog.some((p) => p.subscribable)).toBe(false); });
   it('turns 11″/19″ incense and frankincense sizes into variants', () => {
     expect(by('11" Incense').variants.map((v) => [v.label, v.price])).toEqual([['100 Sticks', 6], ['5 Pack Bundle', 25]]);

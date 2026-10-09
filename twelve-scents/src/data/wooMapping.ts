@@ -42,11 +42,11 @@ export const TRIBES: Record<string, { stone?: string; numeral?: string; colour: 
   reuben: { stone: 'Sardius', numeral: 'I', colour: '#8E2B25' }, simeon: { stone: 'Topaz', numeral: 'II', colour: '#B0822C' },
   levi: { stone: 'Carbuncle', numeral: 'III', colour: '#6E1F35' }, judah: { stone: 'Emerald', numeral: 'IV', colour: '#2F6E4A' },
   issachar: { stone: 'Sapphire', numeral: 'V', colour: '#27447A' }, zebulun: { stone: 'Diamond', numeral: 'VI', colour: '#7F8C8F' },
-  dan: { stone: 'Ligure', numeral: 'VII', colour: '#A0522D' }, naphtali: { stone: 'Agate', numeral: 'VIII', colour: '#5F7A63' },
-  gad: { stone: 'Amethyst', numeral: 'IX', colour: '#5B3A7A' }, asher: { stone: 'Beryl', numeral: 'X', colour: '#8A6A2F' },
+  dan: { stone: 'Ligure', numeral: 'VII', colour: '#A0522D' }, naphtali: { stone: 'Ligure', numeral: 'VIII', colour: '#8B1E4B' },
+  gad: { stone: 'Amethyst', numeral: 'IX', colour: '#5B3A7A' }, asher: { stone: 'Agate', numeral: 'X', colour: '#8A6A2F' },
   joseph: { stone: 'Onyx', numeral: 'XI', colour: '#3A3430' }, benjamin: { stone: 'Jasper', numeral: 'XII', colour: '#8C3D2E' },
-  // Not on the breastplate list: Joseph's sons. Swatches per the brand: black-and-white banded, and dark brown.
-  ephraim: { stone: 'Onyx', colour: '#1A1715', band: '#F4EEE5' }, manasseh: { stone: 'Beryl', colour: '#4A2C1A' },
+  // Not on the breastplate list: Joseph's sons. Swatches per the brand: solid black onyx, and dark brown.
+  ephraim: { stone: 'Onyx', colour: '#1A1715' }, manasseh: { stone: 'Beryl', colour: '#4A2C1A' },
 };
 const BRASS = '#C99A3F';
 const CHARACTERS: Character[] = ['Warm', 'Fresh', 'Grounding', 'Bright'];
@@ -61,10 +61,16 @@ export function inferCharacter(text: string): Character {
   return CHARACTER_HINTS.find(([, re]) => re.test(text))?.[0] ?? 'Warm';
 }
 
-const ENTITIES: Record<string, string> = { '&amp;': '&', '&lt;': '<', '&gt;': '>', '&quot;': '"', '&#039;': "'", '&#8217;': '’', '&#8211;': '–', '&#8212;': '—', '&#8221;': '”', '&#8243;': '″', '&nbsp;': ' ' };
+const NAMED: Record<string, string> = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ', ndash: '–', mdash: '—', lsquo: '‘', rsquo: '’', ldquo: '“', rdquo: '”', hellip: '…', prime: '′', Prime: '″', reg: '®', trade: '™', copy: '©' };
+/** WordPress encodes names and copy ("Frank &#038; Myrrh", 8&#8243;): decode numeric (decimal/hex) and common named entities. */
+function decodeEntity(m: string, body: string): string {
+  const code = body[0] !== '#' ? NaN : body[1] === 'x' || body[1] === 'X' ? parseInt(body.slice(2), 16) : parseInt(body.slice(1), 10);
+  if (!Number.isNaN(code)) return code > 0 && code <= 0x10ffff ? String.fromCodePoint(code) : m;
+  return NAMED[body] ?? m;
+}
 export function stripHtml(html = ''): string {
   return html.replace(/<br\s*\/?>/gi, '\n').replace(/<\/p>\s*<p>/gi, '\n\n').replace(/<[^>]+>/g, '')
-    .replace(/&(#\d+|[a-z]+);/gi, (m) => ENTITIES[m] ?? m).replace(/\n{3,}/g, '\n\n').trim();
+    .replace(/&(#\d+|#x[0-9a-f]+|[a-z]+);/gi, decodeEntity).replace(/\n{3,}/g, '\n\n').trim();
 }
 /** Woo money: minor-unit integer string -> dollars. "3500" with minor unit 2 -> 35. */
 export function wooPrice(prices: WooProduct['prices'] | undefined, useRangeMin = false): number {

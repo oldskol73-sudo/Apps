@@ -11,14 +11,14 @@ const tribes = [
   ['issachar', 'Issachar', 'Sapphire', 'V', '#27447A', 'Grounding', ['Sea salt', 'Vetiver', 'Driftwood'], 'Steady, deep and quietly strong.'],
   ['zebulun', 'Zebulun', 'Diamond', 'VI', '#7F8C8F', 'Bright', ['Sea mist', 'White musk', 'Pearl'], 'Harbour air, crisp and luminous.'],
   ['dan', 'Dan', 'Ligure', 'VII', '#A0522D', 'Grounding', ['Cinnamon bark', 'Tobacco leaf', 'Sandalwood'], 'Burnished, dry and smoky-sweet.'],
-  ['naphtali', 'Naphtali', 'Agate', 'VIII', '#5F7A63', 'Fresh', ['Wild mint', 'Sage', 'Oak moss'], 'A hind let loose: green and swift.'],
+  ['naphtali', 'Naphtali', 'Ligure', 'VIII', '#8B1E4B', 'Fresh', ['Wild mint', 'Sage', 'Oak moss'], 'A hind let loose: green and swift.'],
   ['gad', 'Gad', 'Amethyst', 'IX', '#5B3A7A', 'Warm', ['Lavender', 'Plum', 'Vanilla bean'], 'Velvet violet with a soft finish.'],
-  ['asher', 'Asher', 'Beryl', 'X', '#8A6A2F', 'Warm', ['Olive blossom', 'Fig', 'Myrrh'], 'Rich bread and olive oil, golden.'],
+  ['asher', 'Asher', 'Agate', 'X', '#8A6A2F', 'Warm', ['Olive blossom', 'Fig', 'Myrrh'], 'Rich bread and olive oil, golden.'],
   ['joseph', 'Joseph', 'Onyx', 'XI', '#3A3430', 'Grounding', ['Black pepper', 'Oud', 'Leather'], 'Dark, polished and enduring.'],
   ['benjamin', 'Benjamin', 'Jasper', 'XII', '#8C3D2E', 'Bright', ['Pink grapefruit', 'Red cedar', 'Smoked sugar'], 'The youngest, bright and quick.'],
 ];
 const sprays = tribes.map(([id, name, stone, numeral, colorHex, character, notes, tagline], i) => ({
-  id: `spray-${id}`, category: 'spray', name, stone, numeral, colorHex, character, tagline,
+  id: `spray-${id}`, category: 'spray', name, stone, numeral, colorHex, tribe: true, character, tagline,
   description: `${name}, ${stone.toLowerCase()} of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.`,
   details: [{ label: 'Top', value: notes[0] }, { label: 'Heart', value: notes[1] }, { label: 'Base', value: notes[2] }],
   variants: [{ id: `spray-${id}-100`, label: '100 ml room spray', price: 35 }],
@@ -31,23 +31,38 @@ const mk = (id, category, name, character, tagline, description, details, varian
   ({ id, category, name, colorHex: '#C99A3F', character, tagline, description, details, variants, subscribable, pairings, images: img(id) });
 const v = (id, label, price) => ({ id: `${id}-${label.toLowerCase().replace(/[^a-z0-9]+/g, '')}`, label, price });
 
+// Room & car fresheners: sprays outside the Twelve Tribes (names from the store, prices placeholder).
+const fresheners = [
+  ['lavender', 'Lavender', 'Fresh', 'Calm, clean and floral.', ['Lavender', 'Herbs', 'Soft musk']],
+  ['linen-cloth', 'Linen Cloth', 'Bright', 'Fresh laundry on the line.', ['Cotton', 'White tea', 'Clean musk']],
+  ['mahogany-teakwood', 'Mahogany Teakwood', 'Grounding', 'Dark wood and oak.', ['Mahogany', 'Teakwood', 'Oak moss']],
+].map(([id, name, character, tagline, notes]) => ({
+  id: `spray-${id}`, category: 'spray', name, colorHex: '#C99A3F', tribe: false, character, tagline,
+  description: `${name} room and car freshener. Mist into the air, over fabrics or in the car.`,
+  details: [{ label: 'Top', value: notes[0] }, { label: 'Heart', value: notes[1] }, { label: 'Base', value: notes[2] }],
+  variants: [{ id: `spray-${id}-60`, label: '60 ml room spray', price: 15 }],
+  subscribable: false,
+  pairings: ['incense-frankincense-myrrh', 'charcoal-quick-light'],
+  images: img(`spray-${id}`),
+}));
+
 const others = [
   mk('incense-frankincense-myrrh', 'incense', 'Frankincense & Myrrh', 'Warm', 'The old-world classic.',
-    'A rich, traditional blend of frankincense and myrrh, hand rolled for a clean, aromatic burn. Ideal for prayer, meditation, and creating a reverent atmosphere in the home.',
-    [{ label: 'Base', value: 'Resin & bark' }, { label: 'Made', value: 'Hand rolled' }, { label: 'Finish', value: 'Sweet, balsamic' }],
-    [v('incense-frankincense-myrrh', 'Hand-rolled Incense', 18), v('incense-frankincense-myrrh', 'Box of 3', 48)], true, ['rock-frankincense', 'charcoal-quick-light', 'censer-hanging-brass']),
+    'A rich, traditional blend of frankincense and myrrh, hand-bundled for a clean, aromatic burn. Ideal for prayer, meditation, and creating a reverent atmosphere in the home.',
+    [{ label: 'Base', value: 'Resin & bark' }, { label: 'Made', value: 'Hand-bundled' }, { label: 'Finish', value: 'Sweet, balsamic' }],
+    [v('incense-frankincense-myrrh', 'Hand-bundled Incense', 18), v('incense-frankincense-myrrh', 'Box of 3', 48)], true, ['rock-frankincense', 'charcoal-quick-light', 'censer-hanging-brass']),
   mk('incense-sandalwood-cedar', 'incense', 'Sandalwood & Cedar', 'Grounding', 'Quiet timber.',
-    'Creamy sandalwood over dry cedar, hand rolled and slow burning.',
-    [{ label: 'Base', value: 'Sandalwood' }, { label: 'Made', value: 'Hand rolled' }, { label: 'Finish', value: 'Dry, woody' }],
-    [v('incense-sandalwood-cedar', 'Hand-rolled Incense', 16)], true, ['censer-tabletop-brass']),
+    'Creamy sandalwood over dry cedar, hand-bundled and slow burning.',
+    [{ label: 'Base', value: 'Sandalwood' }, { label: 'Made', value: 'Hand-bundled' }, { label: 'Finish', value: 'Dry, woody' }],
+    [v('incense-sandalwood-cedar', 'Hand-bundled Incense', 16)], true, ['censer-tabletop-brass']),
   mk('incense-rose-sharon', 'incense', 'Rose of Sharon', 'Fresh', 'Petals and morning air.',
-    'A soft floral incense of rose petal and white tea, hand rolled.',
-    [{ label: 'Base', value: 'Rose & tea' }, { label: 'Made', value: 'Hand rolled' }, { label: 'Finish', value: 'Light, airy' }],
-    [v('incense-rose-sharon', 'Hand-rolled Incense', 16)], true, ['censer-tabletop-brass']),
+    'A soft floral incense of rose petal and white tea, hand-bundled.',
+    [{ label: 'Base', value: 'Rose & tea' }, { label: 'Made', value: 'Hand-bundled' }, { label: 'Finish', value: 'Light, airy' }],
+    [v('incense-rose-sharon', 'Hand-bundled Incense', 16)], true, ['censer-tabletop-brass']),
   mk('incense-lavender-sage', 'incense', 'Lavender & Sage', 'Bright', 'A clearing breath.',
     'Herbal lavender and sage for a clean, bright room.',
-    [{ label: 'Base', value: 'Herbs' }, { label: 'Made', value: 'Hand rolled' }, { label: 'Finish', value: 'Clean, green' }],
-    [v('incense-lavender-sage', 'Hand-rolled Incense', 16)], true, ['charcoal-quick-light']),
+    [{ label: 'Base', value: 'Herbs' }, { label: 'Made', value: 'Hand-bundled' }, { label: 'Finish', value: 'Clean, green' }],
+    [v('incense-lavender-sage', 'Hand-bundled Incense', 16)], true, ['charcoal-quick-light']),
   mk('rock-frankincense', 'rock', 'Frankincense Tears', 'Warm', 'Resin from Oman.',
     'Hand-picked frankincense resin, burned on charcoal in a censer for a sweet, lemony smoke.',
     [{ label: 'Origin', value: 'Oman' }, { label: 'Grade', value: 'Hojari' }, { label: 'Burn', value: 'On charcoal' }],
@@ -86,6 +101,6 @@ const others = [
     [v('charcoal-quick-light', '10 discs', 8), v('charcoal-quick-light', '30 discs', 20)], true, ['rock-frankincense']),
 ];
 
-const catalog = { version: 1, products: [...sprays, ...others] };
+const catalog = { version: 1, products: [...sprays, ...fresheners, ...others] };
 fs.writeFileSync(__dirname + '/../src/data/catalog.json', JSON.stringify(catalog, null, 2));
 console.log('products:', catalog.products.length);

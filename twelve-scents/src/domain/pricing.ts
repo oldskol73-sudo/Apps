@@ -75,12 +75,12 @@ export function rankForFinder(products: Product[], type: Category, mood: Mood): 
 export type SortKey = 'featured' | 'price' | 'az';
 export const basePrice = (p: Product) => Math.min(...p.variants.map((v) => v.price));
 
-export function filterProducts(products: Product[], category: Category | 'all', query: string, sort: SortKey): Product[] {
+export function filterProducts(products: Product[], shelf: Shelf | 'all', query: string, sort: SortKey): Product[] {
   const q = query.trim().toLowerCase();
   const hay = (p: Product) =>
-    [p.name, p.stone, p.numeral, p.category, categoryLabel(p.category), p.character, p.tagline,
+    [p.name, p.stone, p.numeral, p.category, categoryLabel(p.category), SHELF_LABELS[shelfOf(p)], p.character, p.tagline,
       ...p.details.map((d) => d.value)].filter(Boolean).join(' ').toLowerCase();
-  let out = products.filter((p) => (category === 'all' || p.category === category) && (!q || hay(p).includes(q)));
+  let out = products.filter((p) => (shelf === 'all' || shelfOf(p) === shelf) && (!q || hay(p).includes(q)));
   if (sort === 'price') out = [...out].sort((a, b) => basePrice(a) - basePrice(b));
   if (sort === 'az') out = [...out].sort((a, b) => a.name.localeCompare(b.name));
   return out;
@@ -90,8 +90,17 @@ export const CATEGORY_LABELS: Record<Category, string> = {
   spray: 'Room Sprays', incense: 'Incense', rock: 'Rock Incense', oil: 'Burning Oils', censer: 'Brass Censers', charcoal: 'Charcoal',
 };
 export const categoryLabel = (c: Category) => CATEGORY_LABELS[c];
+
+/** Browse shelves: the categories, with the Twelve Tribes sprays split out of Room Sprays. */
+export type Shelf = 'tribes' | Category;
+export const SHELVES: Shelf[] = ['tribes', 'spray', 'incense', 'rock', 'oil', 'censer', 'charcoal'];
+export const SHELF_LABELS: Record<Shelf, string> = { tribes: '12 Tribes Collection', ...CATEGORY_LABELS };
+export const isShelf = (s: string): s is Shelf => (SHELVES as string[]).includes(s);
+/** Twelve Tribes spray. Undefined `tribe` is treated as true for stone-bearing sprays. */
+export const isTribe = (p: Product) => p.category === 'spray' && (p.tribe ?? !!p.stone);
+export const shelfOf = (p: Product): Shelf => (isTribe(p) ? 'tribes' : p.category);
 export const CATEGORY_KICKER: Record<Category, string> = {
-  spray: 'ROOM SPRAY', incense: 'HAND-ROLLED INCENSE', rock: 'ROCK INCENSE', oil: 'BURNING OIL', censer: 'BRASS CENSER', charcoal: 'CHARCOAL',
+  spray: 'ROOM SPRAY', incense: 'HAND-BUNDLED INCENSE', rock: 'ROCK INCENSE', oil: 'BURNING OIL', censer: 'BRASS CENSER', charcoal: 'CHARCOAL',
 };
 /** Brand claim: three pumps freshen a room for up to three days (not a product count). */
 export const SPRAY_CLAIM = '3 sprays · up to 3 days';

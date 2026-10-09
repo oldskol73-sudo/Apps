@@ -11,11 +11,26 @@ import { useStore } from '@/state/store';
 import { colors, fonts, gradients, type } from '@/theme';
 
 export default function ConfirmedScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const { id, web, order: webOrder } = useLocalSearchParams<{ id: string; web?: string; order?: string }>();
   const router = useRouter();
   const insets = useSafeAreaInsets();
   const { state } = useStore();
   const order = state.orders.find((o) => o.id === id) ?? state.orders[0];
+  if (web) {
+    // Order placed on the website: the store emails the confirmation and order number.
+    return (
+      <View style={[s.wrap, { paddingTop: insets.top + 40, paddingBottom: insets.bottom + 24 }]}>
+        <LinearGradient colors={gradients.primary} style={s.check} accessibilityElementsHidden><Icon name="check" size={40} color={colors.btnText} /></LinearGradient>
+        <Kicker style={{ marginTop: 28 }}>Order placed</Kicker>
+        <Text style={[type.h1, { color: colors.ink, textAlign: 'center' }]} accessibilityRole="header">Thank you.</Text>
+        <Text style={[type.body, { color: colors.textSecondary, textAlign: 'center', marginTop: 8 }]}>{webOrder
+          ? <>Your order <Text style={{ fontFamily: fonts.medium, color: colors.ink }}>#{webOrder}</Text> is being prepared. Your confirmation is on its way by email.</>
+          : 'Your order is being prepared. Your confirmation and order number are on their way by email.'}</Text>
+        <View style={{ flex: 1 }} />
+        <PrimaryButton label="Continue shopping" onPress={() => router.replace('/')} style={{ width: '100%' }} />
+      </View>
+    );
+  }
   if (!order) return <EmptyView title="No order found" action="Back to shop" onAction={() => router.replace('/')} />;
   return (
     <View style={[s.wrap, { paddingTop: insets.top + 40, paddingBottom: insets.bottom + 24 }]}>

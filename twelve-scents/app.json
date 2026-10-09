@@ -8,14 +8,45 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "backgroundColor": "#F4EEE5",
-    "ios": { "supportsTablet": false, "bundleIdentifier": "com.twelvescents.app" },
-    "android": { "package": "com.twelvescents.app", "edgeToEdgeEnabled": true },
-    "web": { "bundler": "metro", "output": "single" },
-    "plugins": ["expo-router", "expo-font"],
-    "experiments": { "typedRoutes": false },
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.twelvescents.app",
+      "buildNumber": "1",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "com.twelvescents.app",
+      "edgeToEdgeEnabled": true,
+      "versionCode": 1
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 180,
+          "resizeMode": "contain",
+          "backgroundColor": "#F4EEE5"
+        }
+      ],
+      "expo-web-browser",
+      "./plugins/withNoUserScriptSandbox"
+    ],
+    "experiments": {
+      "typedRoutes": false
+    },
     "extra": {
       "apiBaseUrl": "",
       "stripePublishableKey": ""
-    }
+    },
+    "icon": "./assets/icon.png"
   }
 }

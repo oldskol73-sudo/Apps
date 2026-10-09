@@ -9,7 +9,7 @@ import { kickerFor, seedOf } from '@/components/ProductViews';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { CircleButton, Kicker, PrimaryButton, Stepper, Switch2, tap } from '@/components/ui';
 import { features } from '@/data';
-import { lineTotal, money, SUBSCRIPTION_DISCOUNT, unitPrice } from '@/domain/pricing';
+import { lineTotal, money, SHELF_LABELS, shelfOf, SUBSCRIPTION_DISCOUNT, unitPrice } from '@/domain/pricing';
 import { track } from '@/services/analytics';
 import { useCatalog } from '@/state/catalog';
 import { useStore } from '@/state/store';
@@ -52,6 +52,7 @@ export default function ProductScreen() {
   const total = lineTotal(variant.price, qty, plan);
   const fav = state.user.favourites.includes(product.id);
   const images = product.images.length ? product.images : [''];
+  const shelf = shelfOf(product);
 
   return (
     <View style={{ flex: 1, backgroundColor: colors.dark }}>
@@ -66,17 +67,15 @@ export default function ProductScreen() {
           </View>
         </Photo>
 
-        <View style={s.thumbs}>
-          {VIEWS.slice(0, Math.max(1, Math.min(VIEWS.length, product.images.length))).map((v, i) => (
+        {/* Photo picker only when there is more than one photo; otherwise it just repeats the hero. */}
+        {images.length > 1 ? <View style={s.thumbs}>
+          {VIEWS.slice(0, Math.min(VIEWS.length, images.length)).map((v, i) => (
             <Pressable key={v} onPress={() => { tap(); setImg(i); }} accessibilityRole="button" accessibilityLabel={`${v} photo`} accessibilityState={{ selected: img === i }}
               style={[s.thumb, img === i && { borderColor: colors.brassFill, borderWidth: 2 }]}>
               <Photo uri={images[i] ?? images[0]} tone={product.colorHex} seed={seedOf(product) + i} style={StyleSheet.absoluteFill} />
             </Pressable>
           ))}
-          <Pressable onPress={() => router.navigate({ pathname: '/browse', params: { cat: product.category } })} accessibilityRole="button" accessibilityLabel="More in this category" style={[s.thumb, s.moreTile]}>
-            <Icon name="arrow" size={22} color={colors.onDark} />
-          </Pressable>
-        </View>
+        </View> : <View style={{ height: space.gutter }} />}
 
         <View style={{ paddingHorizontal: space.gutter }}>
           <Text style={[type.body, { color: colors.onDark, fontFamily: fonts.light, fontSize: 16, lineHeight: 25 }]}>{product.description}</Text>
@@ -118,6 +117,14 @@ export default function ProductScreen() {
             <PrimaryButton style={{ flex: 1 }} disabled={soldOut} label={soldOut ? 'Sold out' : `Add to Bag · ${money(total)}`} onPress={() => { addToCart(product, variant.id, qty, plan); setQty(1); }} />
           </View>
 
+          <Pressable onPress={() => router.navigate({ pathname: '/browse', params: { cat: shelf } })} accessibilityRole="button" accessibilityLabel={`See all ${SHELF_LABELS[shelf]}`} style={s.moreRow}>
+            <View style={{ flex: 1 }}>
+              <Kicker color={colors.brassLight} style={{ fontSize: 10 }}>Keep exploring</Kicker>
+              <Text style={s.moreTitle}>See all {SHELF_LABELS[shelf]}</Text>
+            </View>
+            <View style={s.moreArrow}><Icon name="arrow" size={20} color={colors.onDark} /></View>
+          </Pressable>
+
         </View>
       </ScrollView>
       {top(
@@ -136,7 +143,9 @@ const s = StyleSheet.create({
   tagline: { fontFamily: fonts.displayItalic, fontSize: 18, color: colors.onDark, marginTop: 6 },
   thumbs: { flexDirection: 'row', gap: 10, padding: space.gutter },
   thumb: { flex: 1, aspectRatio: 1, borderRadius: radius.cardSm, overflow: 'hidden', borderWidth: 1, borderColor: colors.hairlineDark },
-  moreTile: { alignItems: 'center', justifyContent: 'center', backgroundColor: colors.darkPanel },
+  moreRow: { flexDirection: 'row', alignItems: 'center', gap: 12, marginTop: 28, padding: 18, borderRadius: radius.card, backgroundColor: colors.darkPanel, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.hairlineDark },
+  moreTitle: { fontFamily: fonts.display, fontSize: 22, lineHeight: 26, color: colors.onDark, marginTop: 2 },
+  moreArrow: { width: 44, height: 44, borderRadius: 22, borderWidth: 1, borderColor: colors.hairlineDark, alignItems: 'center', justifyContent: 'center' },
   details: { flexDirection: 'row', marginTop: 22, paddingVertical: 14, borderTopWidth: StyleSheet.hairlineWidth, borderBottomWidth: StyleSheet.hairlineWidth, borderColor: colors.hairlineDark },
   detail: { flex: 1, paddingHorizontal: 12 },
   panel: { marginTop: 26, backgroundColor: colors.darkPanel, borderRadius: radius.card, padding: 16 },

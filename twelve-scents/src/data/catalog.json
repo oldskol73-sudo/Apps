@@ -8,6 +8,7 @@
       "stone": "Sardius",
       "numeral": "I",
       "colorHex": "#8E2B25",
+      "tribe": true,
       "character": "Warm",
       "tagline": "The firstborn: warm, spiced and confident.",
       "description": "Reuben, sardius of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -51,6 +52,7 @@
       "stone": "Topaz",
       "numeral": "II",
       "colorHex": "#B0822C",
+      "tribe": true,
       "character": "Bright",
       "tagline": "Sunlit honey over clean wood.",
       "description": "Simeon, topaz of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -94,6 +96,7 @@
       "stone": "Carbuncle",
       "numeral": "III",
       "colorHex": "#6E1F35",
+      "tribe": true,
       "character": "Warm",
       "tagline": "Deep, priestly and resinous.",
       "description": "Levi, carbuncle of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -137,6 +140,7 @@
       "stone": "Emerald",
       "numeral": "IV",
       "colorHex": "#2F6E4A",
+      "tribe": true,
       "character": "Fresh",
       "tagline": "A lion-hearted green.",
       "description": "Judah, emerald of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -180,6 +184,7 @@
       "stone": "Sapphire",
       "numeral": "V",
       "colorHex": "#27447A",
+      "tribe": true,
       "character": "Grounding",
       "tagline": "Steady, deep and quietly strong.",
       "description": "Issachar, sapphire of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -223,6 +228,7 @@
       "stone": "Diamond",
       "numeral": "VI",
       "colorHex": "#7F8C8F",
+      "tribe": true,
       "character": "Bright",
       "tagline": "Harbour air, crisp and luminous.",
       "description": "Zebulun, diamond of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -266,6 +272,7 @@
       "stone": "Ligure",
       "numeral": "VII",
       "colorHex": "#A0522D",
+      "tribe": true,
       "character": "Grounding",
       "tagline": "Burnished, dry and smoky-sweet.",
       "description": "Dan, ligure of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -306,12 +313,13 @@
       "id": "spray-naphtali",
       "category": "spray",
       "name": "Naphtali",
-      "stone": "Agate",
+      "stone": "Ligure",
       "numeral": "VIII",
-      "colorHex": "#5F7A63",
+      "colorHex": "#8B1E4B",
+      "tribe": true,
       "character": "Fresh",
       "tagline": "A hind let loose: green and swift.",
-      "description": "Naphtali, agate of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "description": "Naphtali, ligure of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
       "details": [
         {
           "label": "Top",
@@ -352,6 +360,7 @@
       "stone": "Amethyst",
       "numeral": "IX",
       "colorHex": "#5B3A7A",
+      "tribe": true,
       "character": "Warm",
       "tagline": "Velvet violet with a soft finish.",
       "description": "Gad, amethyst of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -392,12 +401,13 @@
       "id": "spray-asher",
       "category": "spray",
       "name": "Asher",
-      "stone": "Beryl",
+      "stone": "Agate",
       "numeral": "X",
       "colorHex": "#8A6A2F",
+      "tribe": true,
       "character": "Warm",
       "tagline": "Rich bread and olive oil, golden.",
-      "description": "Asher, beryl of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
+      "description": "Asher, agate of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
       "details": [
         {
           "label": "Top",
@@ -438,6 +448,7 @@
       "stone": "Onyx",
       "numeral": "XI",
       "colorHex": "#3A3430",
+      "tribe": true,
       "character": "Grounding",
       "tagline": "Dark, polished and enduring.",
       "description": "Joseph, onyx of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -481,6 +492,7 @@
       "stone": "Jasper",
       "numeral": "XII",
       "colorHex": "#8C3D2E",
+      "tribe": true,
       "character": "Bright",
       "tagline": "The youngest, bright and quick.",
       "description": "Benjamin, jasper of the breastplate. A room spray for the home — mist over linens, in entryways, or into the air before prayer or guests arrive.",
@@ -518,13 +530,136 @@
       ]
     },
     {
+      "id": "spray-lavender",
+      "category": "spray",
+      "name": "Lavender",
+      "colorHex": "#C99A3F",
+      "tribe": false,
+      "character": "Fresh",
+      "tagline": "Calm, clean and floral.",
+      "description": "Lavender room and car freshener. Mist into the air, over fabrics or in the car.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Lavender"
+        },
+        {
+          "label": "Heart",
+          "value": "Herbs"
+        },
+        {
+          "label": "Base",
+          "value": "Soft musk"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-lavender-60",
+          "label": "60 ml room spray",
+          "price": 15
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-lavender-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-lavender-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-lavender-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-linen-cloth",
+      "category": "spray",
+      "name": "Linen Cloth",
+      "colorHex": "#C99A3F",
+      "tribe": false,
+      "character": "Bright",
+      "tagline": "Fresh laundry on the line.",
+      "description": "Linen Cloth room and car freshener. Mist into the air, over fabrics or in the car.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Cotton"
+        },
+        {
+          "label": "Heart",
+          "value": "White tea"
+        },
+        {
+          "label": "Base",
+          "value": "Clean musk"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-linen-cloth-60",
+          "label": "60 ml room spray",
+          "price": 15
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-linen-cloth-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-linen-cloth-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-linen-cloth-inuse.jpg"
+      ]
+    },
+    {
+      "id": "spray-mahogany-teakwood",
+      "category": "spray",
+      "name": "Mahogany Teakwood",
+      "colorHex": "#C99A3F",
+      "tribe": false,
+      "character": "Grounding",
+      "tagline": "Dark wood and oak.",
+      "description": "Mahogany Teakwood room and car freshener. Mist into the air, over fabrics or in the car.",
+      "details": [
+        {
+          "label": "Top",
+          "value": "Mahogany"
+        },
+        {
+          "label": "Heart",
+          "value": "Teakwood"
+        },
+        {
+          "label": "Base",
+          "value": "Oak moss"
+        }
+      ],
+      "variants": [
+        {
+          "id": "spray-mahogany-teakwood-60",
+          "label": "60 ml room spray",
+          "price": 15
+        }
+      ],
+      "subscribable": false,
+      "pairings": [
+        "incense-frankincense-myrrh",
+        "charcoal-quick-light"
+      ],
+      "images": [
+        "https://cdn.twelvescents.example/p/spray-mahogany-teakwood-main.jpg",
+        "https://cdn.twelvescents.example/p/spray-mahogany-teakwood-detail.jpg",
+        "https://cdn.twelvescents.example/p/spray-mahogany-teakwood-inuse.jpg"
+      ]
+    },
+    {
       "id": "incense-frankincense-myrrh",
       "category": "incense",
       "name": "Frankincense & Myrrh",
       "colorHex": "#C99A3F",
       "character": "Warm",
       "tagline": "The old-world classic.",
-      "description": "A rich, traditional blend of frankincense and myrrh, hand rolled for a clean, aromatic burn. Ideal for prayer, meditation, and creating a reverent atmosphere in the home.",
+      "description": "A rich, traditional blend of frankincense and myrrh, hand-bundled for a clean, aromatic burn. Ideal for prayer, meditation, and creating a reverent atmosphere in the home.",
       "details": [
         {
           "label": "Base",
@@ -532,7 +667,7 @@
         },
         {
           "label": "Made",
-          "value": "Hand rolled"
+          "value": "Hand-bundled"
         },
         {
           "label": "Finish",
@@ -541,8 +676,8 @@
       ],
       "variants": [
         {
-          "id": "incense-frankincense-myrrh-handrolledincense",
-          "label": "Hand-rolled Incense",
+          "id": "incense-frankincense-myrrh-handbundledincense",
+          "label": "Hand-bundled Incense",
           "price": 18
         },
         {
@@ -570,7 +705,7 @@
       "colorHex": "#C99A3F",
       "character": "Grounding",
       "tagline": "Quiet timber.",
-      "description": "Creamy sandalwood over dry cedar, hand rolled and slow burning.",
+      "description": "Creamy sandalwood over dry cedar, hand-bundled and slow burning.",
       "details": [
         {
           "label": "Base",
@@ -578,7 +713,7 @@
         },
         {
           "label": "Made",
-          "value": "Hand rolled"
+          "value": "Hand-bundled"
         },
         {
           "label": "Finish",
@@ -587,8 +722,8 @@
       ],
       "variants": [
         {
-          "id": "incense-sandalwood-cedar-handrolledincense",
-          "label": "Hand-rolled Incense",
+          "id": "incense-sandalwood-cedar-handbundledincense",
+          "label": "Hand-bundled Incense",
           "price": 16
         }
       ],
@@ -609,7 +744,7 @@
       "colorHex": "#C99A3F",
       "character": "Fresh",
       "tagline": "Petals and morning air.",
-      "description": "A soft floral incense of rose petal and white tea, hand rolled.",
+      "description": "A soft floral incense of rose petal and white tea, hand-bundled.",
       "details": [
         {
           "label": "Base",
@@ -617,7 +752,7 @@
         },
         {
           "label": "Made",
-          "value": "Hand rolled"
+          "value": "Hand-bundled"
         },
         {
           "label": "Finish",
@@ -626,8 +761,8 @@
       ],
       "variants": [
         {
-          "id": "incense-rose-sharon-handrolledincense",
-          "label": "Hand-rolled Incense",
+          "id": "incense-rose-sharon-handbundledincense",
+          "label": "Hand-bundled Incense",
           "price": 16
         }
       ],
@@ -656,7 +791,7 @@
         },
         {
           "label": "Made",
-          "value": "Hand rolled"
+          "value": "Hand-bundled"
         },
         {
           "label": "Finish",
@@ -665,8 +800,8 @@
       ],
       "variants": [
         {
-          "id": "incense-lavender-sage-handrolledincense",
-          "label": "Hand-rolled Incense",
+          "id": "incense-lavender-sage-handbundledincense",
+          "label": "Hand-bundled Incense",
           "price": 16
         }
       ],

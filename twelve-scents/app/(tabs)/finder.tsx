@@ -7,7 +7,7 @@ import { kickerFor, ProductRow, QuickAdd, seedOf } from '@/components/ProductVie
 import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
 import { CircleButton, Kicker, OutlineButton, PrimaryButton } from '@/components/ui';
-import { basePrice, CATEGORY_LABELS, money, rankForFinder } from '@/domain/pricing';
+import { basePrice, CATEGORY_LABELS, money, rankForFinder, SHELF_LABELS } from '@/domain/pricing';
 import { Category, Mood } from '@/domain/types';
 import { track } from '@/services/analytics';
 import { useCatalog } from '@/state/catalog';
@@ -115,7 +115,7 @@ export default function FinderScreen() {
               {results.slice(1, 3).length > 0 && <Kicker style={{ marginTop: 24 }}>More for you</Kicker>}
               {results.slice(1, 3).map((p) => <ProductRow key={p.id} product={p} />)}
               <View style={{ marginTop: 24, gap: 10 }}>
-                <PrimaryButton label={`See all ${type_ ? CATEGORY_LABELS[type_] : ''}`} onPress={() => router.navigate({ pathname: '/browse', params: { cat: type_ ?? 'spray' } })} />
+                <PrimaryButton label={type_ === 'spray' ? `See the ${SHELF_LABELS.tribes}` : `See all ${type_ ? CATEGORY_LABELS[type_] : ''}`} onPress={() => router.navigate({ pathname: '/browse', params: { cat: type_ === 'spray' || !type_ ? 'tribes' : type_ } })} />
                 <OutlineButton label="Start over" onPress={reset} />
               </View>
             </>)}

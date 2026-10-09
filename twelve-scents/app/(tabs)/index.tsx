@@ -3,27 +3,25 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 import { Photo } from '@/components/Photo';
-import { kickerFor, ProductRow, seedOf } from '@/components/ProductViews';
+import { kickerFor, seedOf } from '@/components/ProductViews';
 import { Screen } from '@/components/Screen';
 import { EmptyView, ErrorView, LoadingView } from '@/components/States';
+import { TRIBE_STRIP, TribePhoto } from '@/components/TribePhoto';
 import { StoneSwatch } from '@/components/StoneSwatch';
 import { Chip, CircleButton, Kicker } from '@/components/ui';
 import { Icon } from '@/components/Icon';
-import { basePrice, CATEGORY_LABELS, money, SPRAY_CLAIM } from '@/domain/pricing';
-import { Category } from '@/domain/types';
+import { basePrice, isTribe, money, Shelf, SHELF_LABELS, SPRAY_CLAIM } from '@/domain/pricing';
 import { useCatalog } from '@/state/catalog';
 import { colors, fonts, radius, space, type } from '@/theme';
 
-const CHIPS: Category[] = ['spray', 'incense', 'rock', 'oil'];
+const CHIPS: Shelf[] = ['tribes', 'spray', 'incense', 'rock', 'oil'];
 
 export default function ShopScreen() {
   const router = useRouter();
   const { status, products, reload } = useCatalog();
-  const sprays = products.filter((p) => p.category === 'spray');
-  const tribes = sprays.filter((p) => p.tribe ?? !!p.stone).slice(0, 12);
+  const tribes = products.filter(isTribe).slice(0, 12);
   const toBurn = products.filter((p) => ['incense', 'rock', 'censer', 'oil'].includes(p.category));
-  const essentials = ['charcoal-quick-light', 'rock-frankincense', 'censer-tabletop-brass', 'incense-sandalwood-cedar'].map((id) => products.find((p) => p.id === id)).filter(Boolean) as typeof products;
-  const openCat = (c: Category) => router.navigate({ pathname: '/browse', params: { cat: c } });
+  const openCat = (c: Shelf) => router.navigate({ pathname: '/browse', params: { cat: c } });
 
   return (
     <Screen>
@@ -34,30 +32,40 @@ export default function ShopScreen() {
         <View style={s.heroText}>
           <Text style={[type.h1, { color: colors.ink }]} accessibilityRole="header">A sweet savor</Text>
           <Text style={[type.h1, { color: colors.brassText, fontFamily: fonts.displayItalic }]}>to your senses.</Text>
-          <Text style={[type.body, { color: colors.ink, marginTop: 10, maxWidth: 270 }]}>Room sprays, hand rolled incense, resins and brass censers for the home.</Text>
+          <Text style={[type.body, { color: colors.ink, marginTop: 10, maxWidth: 270 }]}>Room sprays, hand-bundled incense, resins and brass censers for the home.</Text>
         </View>
       </View>
-      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.chips} style={{ marginTop: -26 }}>
-        {CHIPS.map((c) => <Chip key={c} label={CATEGORY_LABELS[c]} onPress={() => openCat(c)} />)}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={s.chips} style={{ marginTop: -14 }}>
+        {CHIPS.filter((c) => c === 'tribes' || status !== 'ready' || products.some((p) => p.category === c && !isTribe(p))).map((c) => <Chip key={c} label={SHELF_LABELS[c]} onPress={() => openCat(c)} />)}
       </ScrollView>
 
       {status === 'loading' && <LoadingView label="Loading the catalog" />}
       {status === 'error' && <ErrorView message="Check your connection and try again." onRetry={reload} />}
       {status === 'ready' && products.length === 0 && <EmptyView title="Nothing here yet" body="The catalog is empty. Please check back soon." />}
       {status === 'ready' && products.length > 0 && (<>
-        <View style={s.sectionHead}>
-          <View><Kicker>The twelve</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">Room sprays</Text></View>
+        <View style={[s.sectionHead, { marginTop: 20 }]}>
+          <Pressable accessibilityRole="button" accessibilityLabel={`${SHELF_LABELS.tribes}, see all`} onPress={() => openCat('tribes')}><Kicker>Room sprays</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">{SHELF_LABELS.tribes}</Text></Pressable>
           <Text style={[type.small, { color: colors.muted, paddingBottom: 4 }]}>{SPRAY_CLAIM}</Text>
         </View>
         <View style={s.stoneFrame}>
-          {tribes.map((p, i) => (
+          {tribes.map((p, i) => { const photo = !!p.images[0]; return (
             <Pressable key={p.id} accessibilityRole="button" accessibilityLabel={p.stone ? `${p.name}, ${p.stone}` : p.name} onPress={() => router.push(`/product/${p.id}`)}
-              style={[s.stoneCell, i % 3 !== 2 && s.cellR, i < tribes.length - 3 && s.cellB]}>
-              <StoneSwatch hex={p.colorHex} band={p.colorHex2} />
-              <Text style={s.stoneName}>{p.name}</Text>
-              <Text style={s.stoneSub}>{p.stone ?? ' '}</Text>
+              style={s.stoneCell}>
+              {photo && <TribePhoto uri={p.images[0]} />}
+              {photo ? (
+                // Small gem in the corner so the poster's subject shows; the spacer keeps the name level with the other cells.
+                <>
+                  <View style={s.cornerGem}><StoneSwatch hex={p.colorHex} band={p.colorHex2} size={30} /></View>
+                  {/* Stone name runs up the left edge under the gem, clear of the poster's own name banner. */}
+                  {p.stone ? <View style={s.sideLabel} pointerEvents="none"><Text style={s.sideLabelText} numberOfLines={1}>{p.stone}</Text></View> : null}
+                  <View style={{ height: 52 }} />
+                </>
+              ) : <StoneSwatch hex={p.colorHex} band={p.colorHex2} />}
+              {/* The poster shows the tribe name; ours stays invisible to hold the row height (and for cells without a photo). */}
+              <Text style={[s.stoneName, photo && { color: 'transparent' }]}>{p.name}</Text>
+              <Text style={[s.stoneSub, photo && { color: 'transparent' }]}>{p.stone ?? ' '}</Text>
             </Pressable>
-          ))}
+          ); })}
         </View>
 
         <View style={[s.sectionHead, { marginTop: 36 }]}><View><Kicker>To burn</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">Incense & censers</Text></View></View>
@@ -84,22 +92,22 @@ export default function ShopScreen() {
           <View style={s.arrow}><Icon name="arrow" size={20} color={colors.ink} /></View>
         </Pressable>
 
-        <View style={[s.sectionHead, { marginTop: 36 }]}><View><Kicker>Essentials</Kicker><Text style={[type.section, { color: colors.ink }]} accessibilityRole="header">Keep it lit</Text></View></View>
-        <View style={{ paddingHorizontal: space.gutter }}>{essentials.map((p) => <ProductRow key={p.id} product={p} />)}</View>
       </>)}
     </Screen>
   );
 }
 
 const s = StyleSheet.create({
-  hero: { height: 360, marginTop: 4, justifyContent: 'center' },
-  heroText: { paddingHorizontal: space.gutter, paddingBottom: 30 },
+  hero: { height: 250, marginTop: 0, justifyContent: 'center' },
+  heroText: { paddingHorizontal: space.gutter, paddingBottom: 8 },
   chips: { paddingHorizontal: space.gutter, gap: 10, paddingVertical: 4 },
   sectionHead: { paddingHorizontal: space.gutter, marginTop: 28, marginBottom: 14, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'space-between' },
-  stoneFrame: { marginHorizontal: space.gutter, flexDirection: 'row', flexWrap: 'wrap', borderWidth: 1, borderColor: colors.hairline, borderRadius: radius.card, backgroundColor: colors.surface, overflow: 'hidden' },
-  stoneCell: { width: '33.3333%', alignItems: 'center', paddingVertical: 16, gap: 6 },
-  cellR: { borderRightWidth: StyleSheet.hairlineWidth, borderRightColor: colors.hairline },
-  cellB: { borderBottomWidth: StyleSheet.hairlineWidth, borderBottomColor: colors.hairline },
+  // Separate cards with breathing room between them (three per row).
+  stoneFrame: { marginHorizontal: space.gutter, flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 12 },
+  stoneCell: { width: '31.5%', alignItems: 'center', paddingVertical: 16, gap: 6, overflow: 'hidden', borderRadius: radius.cardSm, borderWidth: StyleSheet.hairlineWidth, borderColor: colors.hairline, backgroundColor: colors.surface },
+  cornerGem: { position: 'absolute', top: 8, left: (TRIBE_STRIP - 30) / 2 },
+  sideLabel: { position: 'absolute', left: (TRIBE_STRIP - 30) / 2, top: 44, bottom: 8, width: 30, alignItems: 'center', justifyContent: 'center' },
+  sideLabelText: { width: 140, textAlign: 'center', transform: [{ rotate: '-90deg' }], fontFamily: fonts.medium, fontSize: 9, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.brassText },
   stoneName: { fontFamily: fonts.display, fontSize: 17, color: colors.ink, marginTop: 4 },
   stoneSub: { fontFamily: fonts.medium, fontSize: 9, letterSpacing: 1.6, textTransform: 'uppercase', color: colors.muted },
   carousel: { width: 220, height: 280, borderRadius: radius.card, justifyContent: 'flex-end' },
