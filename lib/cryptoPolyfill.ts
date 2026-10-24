@@ -12,7 +12,7 @@ import { getRandomValues } from "expo-crypto";
 
 type CryptoLike = { getRandomValues: typeof getRandomValues };
 
-const g = global as unknown as { crypto?: CryptoLike };
+const g = globalThis as unknown as { crypto?: CryptoLike };
 
 if (typeof g.crypto !== "object" || g.crypto === null) {
   g.crypto = {} as CryptoLike;
